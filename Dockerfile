@@ -1,6 +1,6 @@
 # First, build the application in the `/app` directory.
 # See `Dockerfile` for details.
-ARG PYTHON_VERSION=3.14
+ARG PYTHON_VERSION=3.14t
 
 FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION}-trixie-slim AS builder
 ENV UV_COMPILE_BYTECODE=1 \
