@@ -33,7 +33,7 @@ dev = [
 lint = ["ruff~=0.14.0"]
 tests = [
     { include-group = "coverage" },
-    "faker~=38.2",
+    "faker~=39.0",
     "httpx~=0.28",
     "pytest~=9.0",
     "pytest-asyncio~=1.3",
