@@ -1087,6 +1087,36 @@
             "title": "Settings Group Validation",
             "type": "array"
           },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
+          },
           "variant": {
             "description": "The plugin variant",
             "examples": [
@@ -1330,6 +1360,36 @@
             },
             "title": "Settings Group Validation",
             "type": "array"
+          },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
           },
           "update": {
             "additionalProperties": {
@@ -2094,6 +2154,36 @@
             "title": "Settings Group Validation",
             "type": "array"
           },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
+          },
           "target_schema": {
             "anyOf": [
               {
@@ -2567,6 +2657,36 @@
             },
             "title": "Settings Group Validation",
             "type": "array"
+          },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
           },
           "variant": {
             "description": "The plugin variant",
@@ -3291,6 +3411,36 @@
             },
             "title": "Settings Group Validation",
             "type": "array"
+          },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
           },
           "variant": {
             "description": "The plugin variant",
@@ -4064,6 +4214,36 @@
             "title": "Settings Group Validation",
             "type": "array"
           },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
+          },
           "variant": {
             "description": "The plugin variant",
             "examples": [
@@ -4312,6 +4492,36 @@
             "title": "Settings Group Validation",
             "type": "array"
           },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
+          },
           "variant": {
             "description": "The plugin variant",
             "examples": [
@@ -4554,6 +4764,36 @@
             },
             "title": "Settings Group Validation",
             "type": "array"
+          },
+          "supported_python_versions": {
+            "anyOf": [
+              {
+                "items": {
+                  "pattern": "^3\\.\\d+$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of Python versions that this plugin supports. Each version should be specified as a string (e.g., '3.8', '3.9', '3.10'). This information helps users determine compatibility with their Python environment.",
+            "examples": [
+              [
+                "3.8",
+                "3.9",
+                "3.10",
+                "3.11"
+              ],
+              [
+                "3.9",
+                "3.10",
+                "3.11",
+                "3.12"
+              ]
+            ],
+            "title": "Supported Python Versions"
           },
           "variant": {
             "description": "The plugin variant",

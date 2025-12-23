@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS plugin_variants (
     settings_preamble TEXT,
     usage TEXT,
     prereq TEXT,
+    supported_python_versions TEXT,
     FOREIGN KEY(plugin_id) REFERENCES plugins (id)
 );
 
