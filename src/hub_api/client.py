@@ -226,6 +226,9 @@ class MeltanoHub:
             "settings": [meltano.PluginSetting.model_validate(s) for s in settings_rows],
             "settings_group_validation": settings_group_validation,
             "variant": variant["name"],
+            "supported_python_versions": json_load_maybe(variant["supported_python_versions"])
+            if variant.get("supported_python_versions")
+            else None,
         }
 
         match plugin_type:

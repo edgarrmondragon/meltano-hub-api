@@ -241,6 +241,9 @@ def _insert_variant(  # noqa: C901, PLR0912, PLR0913
             "settings_preamble": plugin.settings_preamble,
             "usage": plugin.usage,
             "prereq": plugin.prereq,
+            "supported_python_versions": json.dumps(plugin.supported_python_versions)
+            if plugin.supported_python_versions
+            else None,
         },
     )
 

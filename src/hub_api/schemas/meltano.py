@@ -263,6 +263,18 @@ class Plugin(BaseModel):
             "python3.11",
         ],
     )
+    supported_python_versions: list[Annotated[str, Field(pattern=r"^3\.\d+$")]] | None = Field(
+        None,
+        description=(
+            "A list of Python versions that this plugin supports. Each version should "
+            "be specified as a string (e.g., '3.8', '3.9', '3.10'). This information "
+            "helps users determine compatibility with their Python environment."
+        ),
+        examples=[
+            ["3.8", "3.9", "3.10", "3.11"],
+            ["3.9", "3.10", "3.11", "3.12"],
+        ],
+    )
 
     settings_group_validation: list[list[str]] = Field(
         default_factory=list,
