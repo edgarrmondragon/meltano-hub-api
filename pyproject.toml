@@ -28,7 +28,9 @@ dev = [
     { include-group = "build" },
     { include-group = "tests" },
     { include-group = "typing" },
-    "python-dotenv~=1.2",
+]
+imports = [
+    "deptry>=0.24.0",
 ]
 lint = ["ruff~=0.14.0"]
 tests = [
@@ -53,6 +55,12 @@ typing = [
 exclude-newer = "7 days"
 preview = true
 required-version = ">=0.9.17"
+
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+    "granian",  # Not imported, but used as the ASGI server as a uvicorn alternative
+    "python-json-logger",  # Imported dynamically by logging configuration
+]
 
 [tool.ruff]
 line-length = 120
@@ -140,6 +148,7 @@ env_list = [
     "py314t",
     "combine",
     "coverage",
+    "dependencies",
     "lint",
     "typing",
 ]
@@ -221,6 +230,11 @@ commands = [
         ], extend = true },
     ],
 ]
+
+[tool.tox.env.dependencies]
+description = "check for missing and unused dependencies"
+dependency_groups = ["build", "imports", "tests"]
+commands = [ [ "deptry", "src" ]]
 
 [tool.tox.env.build]
 description = "build the plugin database"
