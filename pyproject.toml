@@ -292,6 +292,9 @@ commands = [
     ],
 ]
 
+[tool.ty.rules]
+unused-ignore-comment = "warn"
+
 [build-system]
 requires = ["hatchling==1.28.0"]
 build-backend = "hatchling.build"
