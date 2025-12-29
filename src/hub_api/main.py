@@ -7,10 +7,9 @@ from importlib import metadata, resources
 
 import fastapi
 from fastapi import responses, staticfiles
-from fastapi.middleware import gzip
 
 from hub_api import api, exceptions, static
-from hub_api.helpers import etag
+from hub_api.helpers import compression, etag
 
 DESCRIPTION = """\
 The Meltano Hub API provides access to Meltano's plugin registry. It allows you to search for plugins, \
@@ -32,7 +31,7 @@ app = fastapi.FastAPI(
         },
     ],
 )
-app.add_middleware(gzip.GZipMiddleware, minimum_size=1000)  # ty: ignore[invalid-argument-type]
+app.add_middleware(compression.CompressionMiddleware, minimum_size=1000)  # ty: ignore[invalid-argument-type]
 app.add_middleware(etag.ETagMiddleware)  # ty: ignore[invalid-argument-type]
 assets = resources.files(static) / "assets"
 
