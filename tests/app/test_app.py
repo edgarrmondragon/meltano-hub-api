@@ -275,6 +275,96 @@ async def test_gzip_encoding(api: httpx.AsyncClient) -> None:
     assert response.headers["Content-Type"] == "application/json"
 
 
+@pytest.mark.asyncio
+async def test_zstd_encoding(api: httpx.AsyncClient) -> None:
+    """Test ZSTD encoding."""
+    # Large response should be compressed with zstd
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "zstd"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers["Content-Encoding"] == "zstd"
+    assert response.headers["Content-Type"] == "application/json"
+    assert "Vary" in response.headers
+    assert "Accept-Encoding" in response.headers["Vary"]
+
+    # Small response should not be compressed
+    response = await api.get("/meltano/api/v1/plugins/orchestrators/index", headers={"Accept-Encoding": "zstd"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Content-Encoding" not in response.headers
+    assert response.headers["Content-Type"] == "application/json"
+
+
+@pytest.mark.asyncio
+async def test_compression_negotiation(api: httpx.AsyncClient) -> None:
+    """Test compression algorithm negotiation."""
+    # Client accepts both gzip and zstd - should prefer zstd
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "gzip, zstd"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers["Content-Encoding"] == "zstd"
+
+    # Client accepts both with different order - should still prefer zstd
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "zstd, gzip"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers["Content-Encoding"] == "zstd"
+
+    # Client only accepts gzip
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "gzip"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers["Content-Encoding"] == "gzip"
+
+    # Client only accepts zstd
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "zstd"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers["Content-Encoding"] == "zstd"
+
+
+@pytest.mark.asyncio
+async def test_no_compression_when_not_accepted(api: httpx.AsyncClient) -> None:
+    """Test that no compression is applied when client doesn't support gzip or zstd."""
+    # Client accepts only deflate (not supported)
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "deflate"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Content-Encoding" not in response.headers
+
+    # Client accepts only br (not supported)
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "br"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Content-Encoding" not in response.headers
+
+    # Client explicitly disables compression with identity
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "identity"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Content-Encoding" not in response.headers
+
+
+@pytest.mark.asyncio
+async def test_vary_header(api: httpx.AsyncClient) -> None:
+    """Test that Vary header is set correctly for caching."""
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "zstd"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Vary" in response.headers
+    assert "Accept-Encoding" in response.headers["Vary"]
+
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "gzip"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert "Vary" in response.headers
+    assert "Accept-Encoding" in response.headers["Vary"]
+
+
+@pytest.mark.asyncio
+async def test_parse_accept_encoding_edge_cases(api: httpx.AsyncClient) -> None:
+    """Test edge cases in Accept-Encoding parsing."""
+    # Test with quality factors and mixed encodings (gzip with semicolon in value)
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "gzip, deflate, br"})
+    assert response.status_code == http.HTTPStatus.OK
+    # Should use gzip since deflate and br are not supported
+    assert response.headers.get("Content-Encoding") == "gzip"
+
+    # Test with only zstd in a complex header
+    response = await api.get("/meltano/api/v1/plugins/index", headers={"Accept-Encoding": "deflate, zstd, br"})
+    assert response.status_code == http.HTTPStatus.OK
+    assert response.headers.get("Content-Encoding") == "zstd"
+
+
 @pytest.mark.parametrize(
     ("ua_value", "version"),
     [

@@ -58,7 +58,7 @@ All endpoints respond with an [`ETag`][etag] header, which can be used to check 
 $ curl -I http://localhost:8000/meltano/api/v1/plugins/index
 HTTP/1.1 200 OK
 server: granian
-content-length: 217962
+content-length: 218563
 content-type: application/json
 etag: "etag-df7f7bd3-946d-4f48-99ae-eb64639eb76c"
 date: Sat, 18 Jan 2025 13:21:35 GMT
@@ -72,31 +72,43 @@ etag: "etag-df7f7bd3-946d-4f48-99ae-eb64639eb76c"
 date: Sat, 18 Jan 2025 03:21:45 GMT
 ```
 
-### GZip Compression
+### Response Compression
 
-Large responses are compressed using GZip to save bandwidth.
+Large responses are compressed to save bandwidth. The API supports both **ZSTD** (preferred) and **GZIP** compression.
+
+#### ZSTD Compression (Recommended)
+
+ZSTD provides better compression ratios and faster decompression than GZIP:
 
 ```console
-$ curl -I -X GET http://localhost:8000/meltano/api/v1/plugins/index
+$ curl -I -X GET http://localhost:8000/meltano/api/v1/plugins/index -H 'Accept-Encoding: zstd'
 HTTP/1.1 200 OK
 server: granian
-content-length: 217962
+content-length: 17550
 content-type: application/json
+content-encoding: zstd
+vary: Accept-Encoding
 etag: "etag-ad96ae68-5317-44c2-b700-0492035b741c"
-date: Sat, 18 Jan 2025 03:26:20 GMT
+date: Sat, 18 Jan 2025 03:26:32 GMT
 ```
+
+#### GZIP Compression (Fallback)
+
+For clients that don't support ZSTD, GZIP is still available:
 
 ```console
 $ curl -I -X GET http://localhost:8000/meltano/api/v1/plugins/index -H 'Accept-Encoding: gzip'
 HTTP/1.1 200 OK
 server: granian
-content-length: 19895
+content-length: 20412
 content-type: application/json
 content-encoding: gzip
 vary: Accept-Encoding
 etag: "etag-ad96ae68-5317-44c2-b700-0492035b741c"
 date: Sat, 18 Jan 2025 03:26:32 GMT
 ```
+
+When both are accepted, ZSTD is automatically preferred for optimal performance.
 
 [etag]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
 [fastapi]: https://fastapi.tiangolo.com/
