@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.14"
 
 [options]
-exclude-newer = "2025-12-29T22:04:34.311932065Z"
+exclude-newer = "2025-12-29T22:46:36.290322395Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -134,14 +134,14 @@ wheels = [
 
 [[package]]
 name = "faker"
-version = "39.0.0"
+version = "40.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tzdata" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/30/b9/0897fb5888ddda099dc0f314a8a9afb5faa7e52eaf6865c00686dfb394db/faker-39.0.0.tar.gz", hash = "sha256:ddae46d3b27e01cea7894651d687b33bcbe19a45ef044042c721ceac6d3da0ff", size = 1941757, upload-time = "2025-12-17T19:19:04.762Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/1d/aa43ef59589ddf3647df918143f1bac9eb004cce1c43124ee3347061797d/faker-40.1.0.tar.gz", hash = "sha256:c402212a981a8a28615fea9120d789e3f6062c0c259a82bfb8dff5d273e539d2", size = 1948784, upload-time = "2025-12-29T18:06:00.659Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/5a/26cdb1b10a55ac6eb11a738cea14865fa753606c4897d7be0f5dc230df00/faker-39.0.0-py3-none-any.whl", hash = "sha256:c72f1fca8f1a24b8da10fcaa45739135a19772218ddd61b86b7ea1b8c790dce7", size = 1980775, upload-time = "2025-12-17T19:19:02.926Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/23/e22da510e1ec1488966330bf76d8ff4bd535cbfc93660eeb7657761a1bb2/faker-40.1.0-py3-none-any.whl", hash = "sha256:a616d35818e2a2387c297de80e2288083bc915e24b7e39d2fb5bc66cce3a929f", size = 1985317, upload-time = "2025-12-29T18:05:58.831Z" },
 ]
 
 [[package]]
@@ -323,7 +323,7 @@ build = [
 coverage = [{ name = "coverage", specifier = "~=7.13" }]
 dev = [
     { name = "coverage", specifier = "~=7.13" },
-    { name = "faker", specifier = "~=39.0" },
+    { name = "faker", specifier = "~=40.1" },
     { name = "httpx", specifier = "~=0.28" },
     { name = "mypy", specifier = "~=1.19" },
     { name = "platformdirs", specifier = "~=4.5" },
@@ -341,7 +341,7 @@ imports = [{ name = "deptry", specifier = ">=0.24.0" }]
 lint = [{ name = "ruff", specifier = "~=0.14.0" }]
 tests = [
     { name = "coverage", specifier = "~=7.13" },
-    { name = "faker", specifier = "~=39.0" },
+    { name = "faker", specifier = "~=40.1" },
     { name = "httpx", specifier = "~=0.28" },
     { name = "pytest", specifier = "~=9.0" },
     { name = "pytest-asyncio", specifier = "~=1.3" },
@@ -350,7 +350,7 @@ tests = [
 ]
 typing = [
     { name = "coverage", specifier = "~=7.13" },
-    { name = "faker", specifier = "~=39.0" },
+    { name = "faker", specifier = "~=40.1" },
     { name = "httpx", specifier = "~=0.28" },
     { name = "mypy", specifier = "~=1.19" },
     { name = "platformdirs", specifier = "~=4.5" },
