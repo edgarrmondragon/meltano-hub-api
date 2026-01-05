@@ -35,7 +35,7 @@ imports = [
 lint = ["ruff~=0.14.0"]
 tests = [
     { include-group = "coverage" },
-    "faker~=39.0",
+    "faker~=40.1",
     "httpx~=0.28",
     "pytest~=9.0",
     "pytest-asyncio~=1.3",
