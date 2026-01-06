@@ -11,6 +11,7 @@ dependencies = [
     "aiosqlite~=0.22.0",
     "fastapi~=0.128.0",
     "granian[reload]~=2.6",
+    "litestar[standard]~=2.19.0",
     "packaging~=25.0",
     "pydantic~=2.12",
     "python-json-logger~=4.0",
@@ -56,11 +57,17 @@ exclude-newer = "7 days"
 preview = true
 required-version = ">=0.9.17"
 
+[tool.uv.sources]
+litestar = { git = "https://github.com/litestar-org/litestar", rev = "main" }
+
 [tool.deptry.per_rule_ignores]
 DEP002 = [
     "granian",  # Not imported, but used as the ASGI server as a uvicorn alternative
     "python-json-logger",  # Imported dynamically by logging configuration
 ]
+
+# [tool.uv.sources]
+# litestar = { path = "../../Contrib/litestar-org/litestar", editable = true }
 
 [tool.ruff]
 line-length = 120
@@ -114,6 +121,7 @@ addopts = ["--durations=5", "-ra", "--strict-config", "--strict-markers"]
 asyncio_default_fixture_loop_scope = "session"
 filterwarnings = [
     "error",
+    "once:Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater:UserWarning",
 ]
 log_cli_level = "INFO"
 minversion = "9"

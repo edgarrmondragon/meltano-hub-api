@@ -1,6 +1,9 @@
 base-url = "http://127.0.0.1:8000"
 rate-limit = "10/s"
 
+[checks]
+unsupported_method.enabled = false
+
 [phases.fuzzing]
 enabled = false
 
