@@ -12,6 +12,7 @@ dependencies = [
     "aiosqlite==0.22.1",
     "fastapi==0.141.1",
     "granian[reload]==2.8.2",
+    "litestar[standard]==2.24.0",
     "packaging==26.3",
     "pydantic==2.14.0b2",
     "python-json-logger==4.2.0",
@@ -40,6 +41,7 @@ tests = [
     { include-group = "coverage" },
     "faker~=40.1",
     "httpx2~=2.4",
+    "litestar[testing]",
     "pytest~=9.0",
     "pytest-asyncio~=1.3",
     "pytest-github-actions-annotate-failures~=0.3",
@@ -61,6 +63,9 @@ required-version = ">=0.12"
 override-dependencies = [
     "mypy @ git+https://github.com/python/mypy.git@master"
 ]
+
+[tool.uv.sources]
+litestar = { git = "https://github.com/litestar-org/litestar", rev = "main" }
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
@@ -132,6 +137,8 @@ addopts = ["--durations=5", "-ra"]
 asyncio_default_fixture_loop_scope = "session"
 filterwarnings = [
     "error",
+    "once:Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater:UserWarning",
+    "once:Call to deprecated function 'resolve_before_request'. Deprecated in litestar 3.0. This function will be removed in 4.0. Use '.before_request attribute' instead:DeprecationWarning",
 ]
 log_level = "INFO"
 minversion = "9"
