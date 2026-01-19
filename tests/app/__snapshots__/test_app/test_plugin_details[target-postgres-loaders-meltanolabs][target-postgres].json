@@ -5,7 +5,8 @@
     "hard-delete",
     "schema-flattening",
     "stream-maps",
-    "structured-logging"
+    "structured-logging",
+    "validate-records"
   ],
   "commands": {},
   "description": "PostgreSQL database loader",
