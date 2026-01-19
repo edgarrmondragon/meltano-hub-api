@@ -30,7 +30,7 @@ jobs:
     continue-on-error: false
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: >
         uvx --with tox-uv
         tox -qq -e build -- --git-ref ${{ github.event.inputs.git-ref || 'main' }} --exit-zero >> _errors.md
@@ -69,7 +69,7 @@ jobs:
         - "3.14t"
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: hub-data
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: uvx --with tox-uv tox -e typing
 
   dependencies:
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: uvx --with tox-uv tox -e dependencies
 
   schemathesis:
@@ -105,7 +105,7 @@ jobs:
     - name: Start containers
       run: |
         docker compose up --build -d
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: >
         uvx --from schemathesis
         st run
@@ -130,7 +130,7 @@ jobs:
     - name: Start containers
       run: |
         docker compose up --build -d
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: >
         uvx --with offat
         offat
@@ -163,7 +163,7 @@ jobs:
       with:
         merge-multiple: true
         pattern: coverage-*
-    - uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
     - run: uv tool install --with tox-uv tox
     - name: Combine coverage
       run: |
