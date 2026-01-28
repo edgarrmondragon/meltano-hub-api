@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 import aiosqlite
 import pytest
 import pytest_asyncio
+from faker import Faker
 
 from hub_api import client, database, enums, ids
 from hub_api.helpers import compatibility
@@ -16,12 +17,19 @@ if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
 
 
+@pytest.fixture(scope="session")
+def base_url() -> str:
+    """The base URL for the test server."""
+    faker = Faker()
+    return f"http://{faker.hostname()}"
+
+
 @pytest_asyncio.fixture
-async def hub() -> AsyncGenerator[client.MeltanoHub]:
+async def hub(base_url: str) -> AsyncGenerator[client.MeltanoHub]:
     """Get a Meltano hub instance."""
     db = await database.open_db()
     try:
-        yield client.MeltanoHub(db=db)
+        yield client.MeltanoHub(db=db, base_url=base_url)
     finally:
         await db.close()
 
@@ -366,13 +374,14 @@ async def db() -> AsyncGenerator[aiosqlite.Connection]:
     ],
 )
 async def test_get_plugin_details_meltano_version(
+    base_url: str,
     db: aiosqlite.Connection,
     meltano_version: tuple[int, int],
     settings_dict: dict[str, dict[str, Any]],
 ) -> None:
     """Test get_plugin_details."""
 
-    hub = client.MeltanoHub(db=db)
+    hub = client.MeltanoHub(db=db, base_url=base_url)
     details = await hub.get_plugin_details(
         variant_id=ids.VariantID.from_params(
             plugin_type="extractors",

@@ -16,7 +16,7 @@ async def get_hub(request: fastapi.Request) -> AsyncGenerator[client.MeltanoHub]
     """Get a Meltano hub instance."""
     db = await database.open_db()
     try:
-        yield client.MeltanoHub(db=db, base_url=request.base_url)
+        yield client.MeltanoHub(db=db, base_url=str(request.base_url))
     finally:
         await db.close()
 
