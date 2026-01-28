@@ -6,7 +6,6 @@ import urllib.parse
 from typing import TYPE_CHECKING, Any, assert_never
 
 import pydantic
-from starlette.datastructures import URL
 
 from hub_api import enums, exceptions, ids
 from hub_api.helpers import compatibility
@@ -82,7 +81,7 @@ def _build_variant_path(
     plugin_type: enums.PluginTypeEnum,
     plugin_name: str,
     plugin_variant: str,
-    base_url: URL,
+    base_url: str,
 ) -> str:
     """Build variant URL.
 
@@ -138,15 +137,16 @@ class MeltanoHub:
         self: MeltanoHub,
         *,
         db: aiosqlite.Connection,
-        base_url: URL | None = None,
+        base_url: str,
         base_hub_url: str = BASE_HUB_URL,
     ) -> None:
         self.db: aiosqlite.Connection = db
-        self.base_url = base_url or URL("http://localhost:8000")
+        self.base_url = base_url
         self.base_hub_url: str = base_hub_url
 
     async def _variant_details(  # noqa: PLR0911, PLR0912, PLR0914, PLR0915, C901
-        self: MeltanoHub, variant_id: str
+        self: MeltanoHub,
+        variant_id: str,
     ) -> api_schemas.PluginDetails:
         variant_sql = """
             SELECT pv.*, p.plugin_type, p.name AS plugin_name
