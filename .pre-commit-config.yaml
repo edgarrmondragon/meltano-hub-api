@@ -17,7 +17,7 @@ repos:
     -   id: trailing-whitespace
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.0
     hooks:
     -   id: ruff-check
         args:
@@ -36,7 +36,7 @@ repos:
     -   id: tach
 
 -   repo: https://github.com/crate-ci/typos
-    rev: v1.43.0
+    rev: v1.43.1
     hooks:
     -   id: typos
         exclude: ^tests/app/__snapshots__/.*$
