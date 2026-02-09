@@ -66,7 +66,7 @@
   "logo_url": "https://hub.meltano.com/assets/logos/utilities/dbt.png",
   "name": "dbt-postgres",
   "namespace": "dbt_postgres",
-  "pip_url": "dbt-core dbt-postgres meltano-dbt-ext~=0.3.0",
+  "pip_url": "dbt-core dbt-postgres meltano-dbt-ext~=0.4.0",
   "repo": "https://github.com/dbt-labs/dbt-core",
   "requires": {},
   "settings": [
@@ -169,5 +169,11 @@
     }
   ],
   "settings_group_validation": [],
+  "supported_python_versions": [
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13"
+  ],
   "variant": "dbt-labs"
 }
