@@ -30,7 +30,7 @@ jobs:
     continue-on-error: false
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: >
         uvx --with tox-uv
         tox -qq -e build -- --git-ref ${{ github.event.inputs.git-ref || 'main' }} --exit-zero >> _errors.md
@@ -69,7 +69,7 @@ jobs:
         - "3.14t"
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: hub-data
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: uvx --with tox-uv tox -e typing
 
   dependencies:
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: uvx --with tox-uv tox -e dependencies
 
   schemathesis:
@@ -105,13 +105,13 @@ jobs:
     - name: Start containers
       run: |
         docker compose up --build -d
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: >
         uvx --from schemathesis
         st run
         --header 'User-Agent: schemathesis'
         http://127.0.0.1:8000/openapi.json
-    - uses: mikepenz/action-junit-report@a294a61c909bd8a4b563024a2faa28897fd53ebc # v6.1.0
+    - uses: mikepenz/action-junit-report@74626db7353a25a20a72816467ebf035f674c5f8 # v6.2.0
       if: success() || failure() # always run even if the previous step fails
       with:
         comment: true
@@ -130,7 +130,7 @@ jobs:
     - name: Start containers
       run: |
         docker compose up --build -d
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: >
         uvx --with offat
         offat
@@ -163,7 +163,7 @@ jobs:
       with:
         merge-multiple: true
         pattern: coverage-*
-    - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+    - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
     - run: uv tool install --with tox-uv tox
     - name: Combine coverage
       run: |
