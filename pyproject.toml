@@ -32,7 +32,7 @@ dev = [
 imports = [
     "deptry>=0.24.0",
 ]
-lint = ["ruff~=0.14.0"]
+lint = ["ruff~=0.15.0"]
 tests = [
     { include-group = "coverage" },
     "faker~=40.1",
