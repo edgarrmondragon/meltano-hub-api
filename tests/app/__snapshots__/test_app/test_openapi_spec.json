@@ -946,6 +946,18 @@
             ],
             "title": "Label"
           },
+          "log_parser": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The log parser identifier for Meltano to parse structured logs from this plugin",
+            "title": "Log Parser"
+          },
           "logo_url": {
             "anyOf": [
               {
@@ -2050,6 +2062,18 @@
               "CSV Tap"
             ],
             "title": "Label"
+          },
+          "log_parser": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The log parser identifier for Meltano to parse structured logs from this plugin",
+            "title": "Log Parser"
           },
           "logo_url": {
             "anyOf": [

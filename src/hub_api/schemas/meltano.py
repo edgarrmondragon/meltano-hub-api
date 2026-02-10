@@ -305,6 +305,10 @@ class Extractor(Plugin, extra="forbid"):
     metadata: dict[str, Any] | None = Field(None)
     extractor_schema: dict[str, Any] | None = Field(None, alias="schema")
     select: list[str] | None = Field(None)
+    log_parser: str | None = Field(
+        None,
+        description="The log parser identifier for Meltano to parse structured logs from this plugin",
+    )
 
 
 class Loader(Plugin, extra="forbid"):
@@ -319,6 +323,10 @@ class Loader(Plugin, extra="forbid"):
         None,
         description="The dialect for the loader",
         examples=["postgres"],
+    )
+    log_parser: str | None = Field(
+        None,
+        description="The log parser identifier for Meltano to parse structured logs from this plugin",
     )
 
 
