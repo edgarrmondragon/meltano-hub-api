@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.14"
 
 [options]
-exclude-newer = "2026-02-03T19:33:15.757243741Z"
+exclude-newer = "2026-02-05T21:31:43.37886Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -306,7 +306,7 @@ typing = [
 [package.metadata]
 requires-dist = [
     { name = "aiosqlite", specifier = "~=0.22.0" },
-    { name = "fastapi", specifier = "~=0.128.0" },
+    { name = "fastapi", specifier = "==0.128.0" },
     { name = "granian", extras = ["reload"], specifier = "~=2.7.0" },
     { name = "packaging", specifier = "~=26.0" },
     { name = "pydantic", specifier = "~=2.12" },
