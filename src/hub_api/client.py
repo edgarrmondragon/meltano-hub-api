@@ -388,6 +388,7 @@ class MeltanoHub:
                 plugins[plugin_type][plugin_name] = api_schemas.PluginRef(
                     default_variant=default_variant,
                     logo_url=logo_http_url,
+                    variants={},
                 )
 
             plugins[plugin_type][plugin_name].variants[variant_name] = api_schemas.VariantReference(
@@ -435,6 +436,7 @@ class MeltanoHub:
                 plugins[plugin_name] = api_schemas.PluginRef(
                     default_variant=default_variant,
                     logo_url=logo_http_url,
+                    variants={},
                 )
 
             plugins[plugin_name].variants[variant_name] = api_schemas.VariantReference(
@@ -447,6 +449,38 @@ class MeltanoHub:
             )
 
         return plugins
+
+    async def get_plugin_variants(self: MeltanoHub, plugin_id: ids.PluginID) -> api_schemas.PluginRef:
+        """Get plugin variants."""
+        sql = """
+            SELECT
+                p.name AS plugin,
+                p.plugin_type,
+                pv.logo_url,
+                pv.name AS variant
+            FROM plugins p
+            JOIN plugin_variants pv ON pv.plugin_id = p.id
+            WHERE p.id = :plugin_id AND p.plugin_type = :plugin_type
+        """
+        ref = api_schemas.PluginRef(default_variant="", logo_url=None, variants={})
+        params = {
+            "plugin_id": plugin_id.as_db_id(),
+            "plugin_type": plugin_id.plugin_type.value,
+        }
+        for row in await fetch_all_dicts(self.db, sql, params):
+            if not ref.default_variant:
+                ref.default_variant = row["variant"]
+                # breakpoint()
+                ref.logo_url = pydantic.HttpUrl(f"{self.base_hub_url}{row['logo_url']}") if row["logo_url"] else None
+            ref.variants[row["variant"]] = api_schemas.VariantReference(
+                ref=_build_variant_path(
+                    plugin_type=plugin_id.plugin_type,
+                    plugin_name=plugin_id.plugin_name,
+                    plugin_variant=row["variant"],
+                    base_url=self.base_url,
+                ),
+            )
+        return ref
 
     async def get_sdk_plugins(
         self: MeltanoHub,
