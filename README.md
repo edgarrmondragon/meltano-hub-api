@@ -14,28 +14,28 @@ Built with:
 
 1. Build the plugin database:
 
-    ```bash
-    uv run python -I build.py
-    ```
+   ```bash
+   uv run python -I build.py
+   ```
 
-2. Run the following command to start the API server:
+1. Run the following command to start the API server:
 
-    ```bash
-    uv run --no-dev granian hub_api.main:app
-    ```
+   ```bash
+   uv run --no-dev granian hub_api.main:app
+   ```
 
-3. [Configure Meltano (v4+) to use the new API](https://docs.meltano.com/):
+1. [Configure Meltano (v4+) to use the new API](https://docs.meltano.com/):
 
-    ```bash
-    meltano config set meltano hub_api_root "http://localhost:8000/meltano/api/v1"
-    ```
+   ```bash
+   meltano config set meltano hub_api_root "http://localhost:8000/meltano/api/v1"
+   ```
 
-4. Run Meltano as usual.
+1. Run Meltano as usual.
 
-    ```bash
-    meltano add tap-github
-    meltano lock --update
-    ```
+   ```bash
+   meltano add tap-github
+   meltano lock --update
+   ```
 
 ## Additional Features
 
@@ -74,7 +74,7 @@ date: Sat, 18 Jan 2025 03:21:45 GMT
 
 ### Response Compression
 
-Large responses are compressed to save bandwidth. The API supports both **ZSTD** (preferred) and **GZIP** compression.
+Large responses are compressed to save bandwidth. The API supports both [**ZSTD**][zstd] (preferred) and **GZIP** compression.
 
 #### ZSTD Compression (Recommended)
 
@@ -110,8 +110,9 @@ date: Sat, 18 Jan 2025 03:26:32 GMT
 
 When both are accepted, ZSTD is automatically preferred for optimal performance.
 
+[aiosqlite]: https://github.com/omnilib/aiosqlite/
 [etag]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
 [fastapi]: https://fastapi.tiangolo.com/
 [granian]: https://github.com/emmett-framework/granian/
-[aiosqlite]: https://github.com/omnilib/aiosqlite/
 [schemathesis]: https://github.com/schemathesis/schemathesis/
+[zstd]: https://github.com/facebook/zstd
