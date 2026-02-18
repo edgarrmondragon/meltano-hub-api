@@ -131,7 +131,7 @@ enable_error_code = [
 strict = true
 warn_unused_configs = true
 warn_unused_ignores = true
-warn_unreachable = false
+warn_unreachable = true
 warn_redundant_casts = true
 
 [tool.coverage.run]
