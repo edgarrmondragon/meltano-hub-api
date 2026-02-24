@@ -14,5 +14,11 @@
       "matchManagers": ["pre-commit"],
       "groupName": "pre-commit hooks",
     },
+    {
+      "matchDatasources": ["pypi"],
+      "matchPackageNames": ["pydantic"],
+      "ignoreUnstable": false,
+      "respectLatest": false,
+    },
   ]
 }
