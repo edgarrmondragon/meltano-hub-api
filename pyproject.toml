@@ -116,7 +116,7 @@ asyncio_default_fixture_loop_scope = "session"
 filterwarnings = [
     "error",
 ]
-log_cli_level = "INFO"
+log_level = "INFO"
 minversion = "9"
 testpaths = ["tests"]
 xfail_strict = true
