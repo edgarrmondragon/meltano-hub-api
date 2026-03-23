@@ -26,16 +26,6 @@ repos:
         - --show-fixes
     -   id: ruff-format
 
--   repo: https://github.com/pre-commit/pre-commit
-    rev: v4.5.1
-    hooks:
-    -   id: validate_manifest
-
--   repo: https://github.com/gauge-sh/tach-pre-commit
-    rev: v0.29.0
-    hooks:
-    -   id: tach
-
 -   repo: https://github.com/crate-ci/typos
     rev: v1.44.0
     hooks:

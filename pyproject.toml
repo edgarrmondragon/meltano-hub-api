@@ -32,7 +32,10 @@ dev = [
 imports = [
     "deptry>=0.24.0",
 ]
-lint = ["ruff~=0.15.0"]
+lint = [
+    "ruff~=0.15.0",
+    "tach>=0.34.0",
+]
 tests = [
     { include-group = "coverage" },
     "faker~=40.1",
@@ -52,7 +55,6 @@ typing = [
 ]
 
 [tool.uv]
-exclude-newer = "P7D"
 prerelease = "if-necessary-or-explicit"
 preview = true
 required-version = ">=0.9.17"
@@ -207,6 +209,10 @@ commands = [
         { replace = "posargs", default = [
         ], extend = true },
     ],
+    [
+        "tach",
+        "check",
+    ],
 ]
 
 [tool.tox.env.typing]
@@ -294,7 +300,7 @@ commands = [
 ]
 
 [tool.ty.rules]
-unused-ignore-comment = "warn"
+unused-type-ignore-comment = "ignore"
 
 [build-system]
 requires = ["hatchling==1.29.0"]
