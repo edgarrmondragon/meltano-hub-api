@@ -14,7 +14,7 @@ from starlette.datastructures import Headers
 from starlette.requests import Request
 from syrupy.extensions.json import JSONSnapshotExtension
 
-from hub_api import enums, main
+from hub_api import database, enums, main
 from hub_api.helpers import compatibility, etag
 
 if TYPE_CHECKING:
@@ -28,10 +28,24 @@ def base_url() -> str:
     return f"http://{faker.hostname()}"
 
 
+@pytest.fixture(scope="session", autouse=True)
+def _init_etags() -> None:
+    etag.init(database.get_db_path())
+
+
 @pytest.fixture(scope="session")
 def api(base_url: str) -> httpx.AsyncClient:
     """Create app."""
     return httpx.AsyncClient(base_url=base_url, transport=httpx.ASGITransport(app=main.app))
+
+
+@pytest.mark.asyncio
+async def test_lifespan() -> None:
+    """Test that the lifespan initializes ETags."""
+    with unittest.mock.patch.object(etag, "init") as mock_init:
+        async with main.lifespan(main.app):
+            pass
+    mock_init.assert_called_once_with(database.get_db_path())
 
 
 @pytest.mark.asyncio
@@ -145,25 +159,30 @@ async def test_plugin_details(
 
 
 @pytest.mark.parametrize(
-    ("headers", "etag"),
+    ("headers", "compat"),
     [
-        ({}, etag.ETAGS[compatibility.Compatibility.LATEST]),
-        ({"User-Agent": "Meltano/3.2.0"}, etag.ETAGS[compatibility.Compatibility.PRE_3_3]),
-        ({"User-Agent": "Meltano/3.8.0"}, etag.ETAGS[compatibility.Compatibility.PRE_3_9]),
-        ({"User-Agent": "Meltano/3.9.0"}, etag.ETAGS[compatibility.Compatibility.LATEST]),
+        ({}, compatibility.Compatibility.LATEST),
+        ({"User-Agent": "Meltano/3.2.0"}, compatibility.Compatibility.PRE_3_3),
+        ({"User-Agent": "Meltano/3.8.0"}, compatibility.Compatibility.PRE_3_9),
+        ({"User-Agent": "Meltano/3.9.0"}, compatibility.Compatibility.LATEST),
     ],
 )
 @pytest.mark.asyncio
-async def test_plugin_index_etag_match(api: httpx.AsyncClient, headers: dict[str, str], etag: str) -> None:
+async def test_plugin_index_etag_match(
+    api: httpx.AsyncClient,
+    headers: dict[str, str],
+    compat: compatibility.Compatibility,
+) -> None:
     """Test /meltano/api/v1/plugins/stats."""
+    expected_etag = etag.ETAGS[compat]
     response = await api.get("/meltano/api/v1/plugins/index", headers=headers)
     assert response.status_code == http.HTTPStatus.OK
-    assert response.headers["ETag"] == etag
+    assert response.headers["ETag"] == expected_etag
     assert "extractors" in response.json()
 
     response = await api.get(
         "/meltano/api/v1/plugins/index",
-        headers={"If-None-Match": etag, **headers},
+        headers={"If-None-Match": expected_etag, **headers},
     )
     assert response.status_code == http.HTTPStatus.NOT_MODIFIED
     assert not response.content
