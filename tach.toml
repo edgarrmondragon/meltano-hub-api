@@ -55,7 +55,6 @@ depends_on = [
     "hub_api.api",
     "hub_api.exceptions",
     "hub_api.helpers.etag",
-    "hub_api.static",
 ]
 
 [[modules]]

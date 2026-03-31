@@ -73,7 +73,7 @@ def check_etag(
             # pattern=r'^"W/etag-[A-Za-z0-9-]+"$',
             pattern=r'^"etag-[A-Za-z0-9-]+"$',
         ),
-    ] = None,  # type: ignore[assignment]
+    ] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default]
 ) -> None:
     """Get ETag value."""
     if if_none_match == get_etag(request):

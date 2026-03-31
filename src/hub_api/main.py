@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import http
-from importlib import metadata, resources
+from importlib import metadata
 
 import fastapi
 from fastapi import responses, staticfiles
 
-from hub_api import api, exceptions, static
+from hub_api import api, exceptions
 from hub_api.helpers import compression, etag
 
 DESCRIPTION = """\
@@ -31,9 +31,8 @@ app = fastapi.FastAPI(
         },
     ],
 )
-app.add_middleware(compression.CompressionMiddleware, minimum_size=1000)  # ty: ignore[invalid-argument-type]
-app.add_middleware(etag.ETagMiddleware)  # ty: ignore[invalid-argument-type]
-assets = resources.files(static) / "assets"
+app.add_middleware(compression.CompressionMiddleware, minimum_size=1000)
+app.add_middleware(etag.ETagMiddleware)
 
 
 @app.exception_handler(exceptions.NotFoundError)
@@ -63,4 +62,4 @@ def bad_parameter_exception_handler(
 
 
 app.include_router(api.v1.api.router, prefix="/meltano/api/v1")
-app.mount("/assets", staticfiles.StaticFiles(directory=assets), name="assets")  # type: ignore[arg-type]
+app.mount("/assets", staticfiles.StaticFiles(packages=[("hub_api.static", "assets")]), name="assets")
