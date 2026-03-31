@@ -144,7 +144,22 @@ class MeltanoHub:
         self.base_url = base_url
         self.base_hub_url: str = base_hub_url
 
-    async def _variant_details(  # noqa: PLR0911, PLR0912, PLR0914, PLR0915, C901
+    async def _get_variant_capabilities(self: MeltanoHub, variant_id: str) -> list[str]:
+        sql = "SELECT name FROM capabilities WHERE variant_id = :variant_id"
+        rows = await fetch_all_dicts(self.db, sql, {"variant_id": variant_id})
+        return [r["name"] for r in rows]
+
+    async def _get_extractor_select(self: MeltanoHub, variant_id: str) -> list[str] | None:
+        sql = "SELECT expression FROM selects WHERE variant_id = :variant_id"
+        rows = await fetch_all_dicts(self.db, sql, {"variant_id": variant_id})
+        return [r["expression"] for r in rows] if rows else None
+
+    async def _get_extractor_metadata(self: MeltanoHub, variant_id: str) -> dict[str, Any] | None:
+        sql = "SELECT key, value FROM metadata WHERE variant_id = :variant_id"
+        rows = await fetch_all_dicts(self.db, sql, {"variant_id": variant_id})
+        return {r["key"]: json_load_maybe(r["value"]) for r in rows} if rows else None
+
+    async def _variant_details(  # noqa: PLR0911, PLR0912, PLR0914, C901
         self: MeltanoHub,
         variant_id: str,
     ) -> api_schemas.PluginDetails:
@@ -178,24 +193,10 @@ class MeltanoHub:
                 setting["value"] = json_load_maybe(setting["value"])
                 setting["options"] = json_load_maybe(setting["options"])
                 setting["aliases"] = aliases_by_setting.get(setting["id"]) or None
-        else:
-            aliases_by_setting = {}
-
-        capabilities_sql = "SELECT name FROM capabilities WHERE variant_id = :variant_id"
-        capabilities_rows = await fetch_all_dicts(self.db, capabilities_sql, {"variant_id": variant_id})
-        capabilities = [row["name"] for row in capabilities_rows]
 
         commands_sql = "SELECT name, args, description, executable FROM commands WHERE variant_id = :variant_id"
         commands_rows = await fetch_all_dicts(self.db, commands_sql, {"variant_id": variant_id})
         commands = {cmd["name"]: cmd for cmd in commands_rows}
-
-        selects_sql = "SELECT expression FROM selects WHERE variant_id = :variant_id"
-        selects_rows = await fetch_all_dicts(self.db, selects_sql, {"variant_id": variant_id})
-        select = [s["expression"] for s in selects_rows] if selects_rows else None
-
-        metadata_sql = "SELECT key, value FROM metadata WHERE variant_id = :variant_id"
-        metadata_rows = await fetch_all_dicts(self.db, metadata_sql, {"variant_id": variant_id})
-        metadata = {m["key"]: json_load_maybe(m["value"]) for m in metadata_rows} if metadata_rows else None
 
         setting_groups_sql = "SELECT group_id, setting_name FROM setting_groups WHERE variant_id = :variant_id"
         setting_groups = await fetch_all_dicts(self.db, setting_groups_sql, {"variant_id": variant_id})
@@ -233,12 +234,12 @@ class MeltanoHub:
 
         match plugin_type:
             case enums.PluginTypeEnum.extractors:
-                result["capabilities"] = capabilities
-                result["select"] = select
-                result["metadata"] = metadata
+                result["capabilities"] = await self._get_variant_capabilities(variant_id)
+                result["select"] = await self._get_extractor_select(variant_id)
+                result["metadata"] = await self._get_extractor_metadata(variant_id)
                 return api_schemas.ExtractorResponse.model_validate(result)
             case enums.PluginTypeEnum.loaders:
-                result["capabilities"] = capabilities
+                result["capabilities"] = await self._get_variant_capabilities(variant_id)
                 return api_schemas.LoaderResponse.model_validate(result)
             case enums.PluginTypeEnum.utilities:
                 return api_schemas.UtilityResponse.model_validate(result)
