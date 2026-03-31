@@ -89,13 +89,13 @@ class FindParams(BaseModel):
         examples=["tap-github"],
     )
 
-    type: enums.PluginTypeEnum = Field(  # type: ignore[assignment]
+    type: enums.PluginTypeEnum = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
         None,
         description="The plugin type",
         examples=[enums.PluginTypeEnum.extractors],
     )
 
-    variant: str = Field(  # type: ignore[assignment]
+    variant: str = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
         None,
         description="The optional variant name",
         examples=["meltanolabs"],
