@@ -10,6 +10,7 @@ path = "hub_api.api"
 depends_on = [
     "hub_api.dependencies",
     "hub_api.enums",
+    "hub_api.helpers.compatibility",
     "hub_api.ids",
     "hub_api.schemas",
 ]
@@ -19,9 +20,14 @@ path = "hub_api.client"
 depends_on = [
     "hub_api.enums",
     "hub_api.exceptions",
+    "hub_api.helpers.compatibility",
     "hub_api.ids",
     "hub_api.schemas",
 ]
+
+[[modules]]
+path = "hub_api.database"
+depends_on = []
 
 [[modules]]
 path = "hub_api.dependencies"
@@ -39,8 +45,18 @@ path = "hub_api.exceptions"
 depends_on = []
 
 [[modules]]
-path = "hub_api.helpers.etag"
+path = "hub_api.helpers.compatibility"
 depends_on = []
+
+[[modules]]
+path = "hub_api.helpers.compression"
+depends_on = []
+
+[[modules]]
+path = "hub_api.helpers.etag"
+depends_on = [
+    "hub_api.helpers.compatibility",
+]
 
 [[modules]]
 path = "hub_api.ids"
@@ -53,7 +69,9 @@ depends_on = [
 path = "hub_api.main"
 depends_on = [
     "hub_api.api",
+    "hub_api.database",
     "hub_api.exceptions",
+    "hub_api.helpers.compression",
     "hub_api.helpers.etag",
 ]
 
@@ -65,10 +83,6 @@ depends_on = [
 
 [[modules]]
 path = "hub_api.static"
-depends_on = []
-
-[[modules]]
-path = "hub_api.database"
 depends_on = []
 
 [[interfaces]]
