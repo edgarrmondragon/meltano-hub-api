@@ -142,13 +142,12 @@ branch = true
 parallel = true
 
 [tool.tox]
-min_version = "4.22"
-requires = ["tox", "tox-uv"]
+requires = ["tox>=4.51", "tox-uv"]
 env_list = [
     "format",
     "build",
-    "py314",
-    "py314t",
+    "3.14",
+    "3.14t",
     "combine",
     "coverage",
     "dependencies",
@@ -157,7 +156,8 @@ env_list = [
 ]
 
 [tool.tox.env_run_base]
-description = "run unit tests"
+description = "run unit tests on Python {py_dot_ver} (free-threaded: {py_free_threaded})"
+base_python_file = [ ".python-version" ]
 runner = "uv-venv-lock-runner"
 dependency_groups = ["tests"]
 commands = [
@@ -256,14 +256,14 @@ commands = [
     ],
 ]
 
-[tool.tox.env.py314]
+[tool.tox.env."3.14"]
 depends = ["build"]
 
 [tool.tox.env.combine]
 description = "combine coverage reports"
 skip_install = true
 dependency_groups = [ "coverage" ]
-depends = ["py314"]
+depends = ["3.14"]
 commands = [[ "coverage", "combine" ]]
 
 [tool.tox.env.coverage]
