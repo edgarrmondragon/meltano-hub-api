@@ -18,7 +18,7 @@ repos:
     -   id: trailing-whitespace
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.7
+    rev: v0.15.8
     hooks:
     -   id: ruff-check
         args:
@@ -27,13 +27,13 @@ repos:
     -   id: ruff-format
 
 -   repo: https://github.com/crate-ci/typos
-    rev: v1.44.0
+    rev: v1.45.0
     hooks:
     -   id: typos
         exclude: ^tests/app/__snapshots__/.*$
 
 -   repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.0
+    rev: 0.37.1
     hooks:
     -   id: check-github-workflows
     -   id: check-renovate
@@ -42,7 +42,7 @@ repos:
         - pyjson5==2.0.0
 
 -   repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.12
+    rev: 0.11.2
     hooks:
     -   id: uv-lock
     -   id: uv-sync
