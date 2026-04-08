@@ -9,16 +9,39 @@ from typing import TYPE_CHECKING, Any
 import fastapi
 import httpx
 import pytest
+import schemathesis
 from faker import Faker
+from schemathesis.checks import CHECKS, load_all_checks
 from starlette.datastructures import Headers
 from starlette.requests import Request
+from starlette.testclient import TestClient
 from syrupy.extensions.json import JSONSnapshotExtension
 
 from hub_api import database, enums, main
 from hub_api.helpers import compatibility, etag
 
 if TYPE_CHECKING:
+    from schemathesis.generation.case import Case
     from syrupy.assertion import SnapshotAssertion
+
+
+schema = schemathesis.openapi.from_asgi("/openapi.json", main.app)
+
+load_all_checks()
+# The /default endpoint intentionally returns 307; exclude checks that assume 2xx or a
+# JSON body, since RedirectResponse has an empty body with content-type: application/json.
+_REDIRECT_EXCLUDED_CHECKS = CHECKS.get_by_names([
+    "content_type_conformance",
+    "positive_data_acceptance",
+    "response_schema_conformance",
+])
+
+
+@schema.parametrize()
+def test_api_with_session(case: Case) -> None:
+    with TestClient(main.app) as client:
+        excluded_checks = _REDIRECT_EXCLUDED_CHECKS if case.operation.path.endswith("/default") else None
+        case.call_and_validate(session=client, excluded_checks=excluded_checks)
 
 
 @pytest.fixture(scope="session")

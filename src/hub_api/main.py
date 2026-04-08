@@ -24,6 +24,8 @@ view their details, and download the necessary files to install them.
 - The API is read-only, and no authentication is required.
 """
 
+etag.init(database.get_db_path())
+
 
 @asynccontextmanager
 async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # noqa: ARG001, RUF029
