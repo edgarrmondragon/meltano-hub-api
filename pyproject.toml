@@ -12,6 +12,7 @@ dependencies = [
     "aiosqlite==0.22.1",
     "fastapi==0.135.3",
     "granian[reload]==2.7.2",
+    "litestar[standard]==2.21.1",
     "packaging==26.0",
     "pydantic==2.13.0b3",
     "python-json-logger==4.1.0",
