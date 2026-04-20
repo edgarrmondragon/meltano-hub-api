@@ -26,7 +26,7 @@ view their details, and download the necessary files to install them.
 
 
 @asynccontextmanager
-async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # noqa: ARG001, RUF029
+async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # noqa: ARG001
     etag.init(database.get_db_path())
     yield
 
