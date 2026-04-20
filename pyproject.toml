@@ -13,7 +13,7 @@ dependencies = [
     "fastapi==0.135.3",
     "granian[reload]==2.7.2",
     "packaging==26.0",
-    "pydantic==2.13.0b3",
+    "pydantic==2.13.0",
     "python-json-logger==4.1.0",
     "starlette==1.0.0",
 ]
@@ -183,6 +183,7 @@ commands = [
 
 [tool.tox.env.format]
 description = "format code"
+labels = ["check"]
 dependency_groups = ["lint"]
 commands = [
     [
@@ -202,6 +203,7 @@ commands = [
 
 [tool.tox.env.lint]
 description = "lint code"
+labels = ["check"]
 dependency_groups = ["lint"]
 depends = ["format"]
 commands = [
@@ -226,6 +228,7 @@ commands = [
 
 [tool.tox.env.typing]
 description = "run type checking"
+labels = ["check"]
 dependency_groups = ["typing"]
 commands = [
     [
@@ -249,6 +252,7 @@ commands = [
 
 [tool.tox.env.dependencies]
 description = "check for missing and unused dependencies"
+labels = ["check"]
 dependency_groups = ["build", "imports", "tests"]
 commands = [ [ "deptry", "src" ]]
 
