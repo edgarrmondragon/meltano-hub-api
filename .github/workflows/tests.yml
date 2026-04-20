@@ -51,7 +51,7 @@ jobs:
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
         edit-mode: replace
         issue-number: ${{ github.event.pull_request.number }}
-    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: hub-data
         path: plugins.db
@@ -76,7 +76,7 @@ jobs:
       with:
         name: hub-data
     - run: uvx --with tox-uv tox -e ${{ matrix.python-version }}
-    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       if: always()
       with:
         include-hidden-files: true
@@ -153,7 +153,7 @@ jobs:
         --headers 'User-Agent: offat'
         --format json
         --output ./offat-tmp/results.json
-    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: offat-results.json
         path: ./offat-tmp/results.json
@@ -187,7 +187,7 @@ jobs:
 
         # Report again and fail if under 100%.
         tox -e coverage
-    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       if: failure()
       with:
         name: html-report
