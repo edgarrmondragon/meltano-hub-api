@@ -13,7 +13,7 @@ dependencies = [
     "fastapi==0.135.3",
     "granian[reload]==2.7.3",
     "packaging==26.1",
-    "pydantic==2.13.0",
+    "pydantic==2.13.1",
     "python-json-logger==4.1.0",
     "starlette==1.0.0",
 ]
