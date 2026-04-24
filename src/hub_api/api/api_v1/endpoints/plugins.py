@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import http
 from typing import Annotated
 
 import fastapi
@@ -126,6 +127,7 @@ async def find_plugin(
         404: {"description": "Plugin not found"},
     },
     operation_id="get_default_plugin",
+    status_code=http.HTTPStatus.TEMPORARY_REDIRECT,
 )
 async def get_default_plugin(
     hub: dependencies.Hub,

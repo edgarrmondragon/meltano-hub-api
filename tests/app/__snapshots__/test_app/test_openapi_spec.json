@@ -5559,7 +5559,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "307": {
             "content": {
               "application/json": {
                 "schema": {}
