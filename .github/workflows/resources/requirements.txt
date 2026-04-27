@@ -1,5 +1,5 @@
 offat==0.19.4
 prek==0.3.9
 schemathesis==4.15.1
-tox==4.52.1
+tox==4.53.0
 tox-uv==1.35.1
