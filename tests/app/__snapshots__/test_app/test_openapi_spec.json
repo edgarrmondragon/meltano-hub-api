@@ -1913,6 +1913,7 @@
           "schema-flattening",
           "soft-delete",
           "stream-maps",
+          "target-schema",
           "validate-records",
           "structured-logging"
         ],
@@ -2437,6 +2438,8 @@
       "MapperCapabilityEnum": {
         "description": "Mapper capabilities.",
         "enum": [
+          "about",
+          "schema-flattening",
           "stream-maps",
           "structured-logging"
         ],

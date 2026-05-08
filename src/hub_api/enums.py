@@ -72,6 +72,7 @@ class LoaderCapabilityEnum(_HyphenatedEnum):
     schema_flattening = enum.auto()
     soft_delete = enum.auto()
     stream_maps = enum.auto()
+    target_schema = enum.auto()
     validate_records = enum.auto()
     structured_logging = enum.auto()
 
@@ -79,5 +80,7 @@ class LoaderCapabilityEnum(_HyphenatedEnum):
 class MapperCapabilityEnum(_HyphenatedEnum):
     """Mapper capabilities."""
 
+    about = enum.auto()
+    schema_flattening = enum.auto()
     stream_maps = enum.auto()
     structured_logging = enum.auto()
