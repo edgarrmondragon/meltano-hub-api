@@ -22,7 +22,7 @@ dependencies = [
 build = [
     "platformdirs~=4.9",
     "PyYAML~=6.0",
-    "urllib3~=2.6.0",
+    "urllib3~=2.7.0",
 ]
 coverage = ["coverage~=7.13"]
 dev = [
