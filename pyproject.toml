@@ -77,6 +77,7 @@ DEP002 = [
 [tool.ruff]
 line-length = 120
 preview = true
+required-version = ">=0.15.14"
 
 [tool.ruff.lint]
 ignore = ["COM812"]

@@ -170,7 +170,34 @@ def _insert_rows(connection: sqlite3.Connection, table: str, rows: Sequence[dict
     connection.executemany(query, rows)
 
 
-def _insert_variant(  # noqa: C901, PLR0912, PLR0913
+def _match_plugin(
+    plugin_type: enums.PluginTypeEnum,
+    definition: dict[str, Any],
+) -> validation.HubPluginDefinition:
+    match plugin_type:
+        case enums.PluginTypeEnum.extractors:
+            plugin = validation.ExtractorDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.loaders:
+            plugin = validation.LoaderDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.utilities:
+            plugin = validation.UtilityDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.transformers:
+            plugin = validation.TransformerDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.transforms:
+            plugin = validation.TransformDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.orchestrators:
+            plugin = validation.OrchestratorDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.mappers:
+            plugin = validation.MapperDefinition.model_validate(definition)
+        case enums.PluginTypeEnum.files:
+            plugin = validation.FileDefinition.model_validate(definition)
+        case _:
+            assert_never(plugin_type)
+
+    return plugin
+
+
+def _insert_variant(  # noqa: PLR0913
     *,
     connection: sqlite3.Connection,
     variant: str,
@@ -183,25 +210,7 @@ def _insert_variant(  # noqa: C901, PLR0912, PLR0913
     """Insert a variant into the database."""
     plugin: validation.HubPluginDefinition
     try:
-        match plugin_type:
-            case enums.PluginTypeEnum.extractors:
-                plugin = validation.ExtractorDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.loaders:
-                plugin = validation.LoaderDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.utilities:
-                plugin = validation.UtilityDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.transformers:
-                plugin = validation.TransformerDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.transforms:
-                plugin = validation.TransformDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.orchestrators:
-                plugin = validation.OrchestratorDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.mappers:
-                plugin = validation.MapperDefinition.model_validate(definition)
-            case enums.PluginTypeEnum.files:
-                plugin = validation.FileDefinition.model_validate(definition)
-            case _:
-                assert_never(plugin_type)
+        plugin = _match_plugin(plugin_type, definition)
     except pydantic.ValidationError as exc:
         logger.error("Error validating plugin %s", plugin_id)
         for error in exc.errors():
