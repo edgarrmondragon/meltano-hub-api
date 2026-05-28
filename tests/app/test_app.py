@@ -7,7 +7,7 @@ import unittest.mock
 from typing import TYPE_CHECKING, Any
 
 import fastapi
-import httpx
+import httpx2 as httpx
 import pytest
 from faker import Faker
 from starlette.datastructures import Headers
