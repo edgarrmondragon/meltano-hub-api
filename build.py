@@ -174,6 +174,7 @@ def _match_plugin(
     plugin_type: enums.PluginTypeEnum,
     definition: dict[str, Any],
 ) -> validation.HubPluginDefinition:
+    plugin: validation.HubPluginDefinition
     match plugin_type:
         case enums.PluginTypeEnum.extractors:
             plugin = validation.ExtractorDefinition.model_validate(definition)
@@ -208,7 +209,6 @@ def _insert_variant(  # noqa: PLR0913
     result: LoadResult,
 ) -> None:
     """Insert a variant into the database."""
-    plugin: validation.HubPluginDefinition
     try:
         plugin = _match_plugin(plugin_type, definition)
     except pydantic.ValidationError as exc:
