@@ -317,5 +317,5 @@ commands = [
 unused-type-ignore-comment = "ignore"
 
 [build-system]
-requires = ["hatchling==1.29.0"]
+requires = ["hatchling==1.30.1"]
 build-backend = "hatchling.build"
