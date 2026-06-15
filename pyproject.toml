@@ -26,12 +26,11 @@ build = [
 ]
 coverage = ["coverage~=7.13"]
 dev = [
+    "deptry>=0.24.0",
     { include-group = "build" },
+    { include-group = "lint" },
     { include-group = "tests" },
     { include-group = "typing" },
-]
-imports = [
-    "deptry>=0.24.0",
 ]
 lint = [
     "ruff~=0.15.0",
@@ -59,14 +58,6 @@ typing = [
 prerelease = "if-necessary-or-explicit"
 preview = true
 required-version = ">=0.11"
-
-[tool.deptry.package_module_name_map]
-mypy = "mypy"
-ruff = "ruff"
-tach = "tach"
-ty = "ty"
-types-PyYAML = "PyYAML"
-types-requests = "requests"
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
@@ -254,7 +245,7 @@ commands = [
 [tool.tox.env.dependencies]
 description = "check for missing and unused dependencies"
 labels = ["check"]
-dependency_groups = ["build", "imports", "tests"]
+dependency_groups = [ "dev" ]
 commands = [ [ "deptry", "src" ]]
 
 [tool.tox.env.build]

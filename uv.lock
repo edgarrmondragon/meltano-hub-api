@@ -318,6 +318,7 @@ coverage = [
 ]
 dev = [
     { name = "coverage" },
+    { name = "deptry" },
     { name = "faker" },
     { name = "httpx2" },
     { name = "mypy" },
@@ -326,14 +327,13 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pyyaml" },
+    { name = "ruff" },
     { name = "syrupy" },
+    { name = "tach" },
     { name = "ty" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
     { name = "urllib3" },
-]
-imports = [
-    { name = "deptry" },
 ]
 lint = [
     { name = "ruff" },
@@ -385,6 +385,7 @@ build = [
 coverage = [{ name = "coverage", specifier = "~=7.13" }]
 dev = [
     { name = "coverage", specifier = "~=7.13" },
+    { name = "deptry", specifier = ">=0.24.0" },
     { name = "faker", specifier = "~=40.1" },
     { name = "httpx2", specifier = "~=2.3.0" },
     { name = "mypy", specifier = "~=2.1.0" },
@@ -393,13 +394,14 @@ dev = [
     { name = "pytest-asyncio", specifier = "~=1.3" },
     { name = "pytest-github-actions-annotate-failures", specifier = "~=0.3" },
     { name = "pyyaml", specifier = "~=6.0" },
+    { name = "ruff", specifier = "~=0.15.0" },
     { name = "syrupy", specifier = "~=5.0" },
+    { name = "tach", specifier = ">=0.34.0" },
     { name = "ty", specifier = "==0.0.44" },
     { name = "types-pyyaml", specifier = ">=6.0.12.20240808" },
     { name = "types-requests", specifier = ">=2.32.0" },
     { name = "urllib3", specifier = "~=2.7.0" },
 ]
-imports = [{ name = "deptry", specifier = ">=0.24.0" }]
 lint = [
     { name = "ruff", specifier = "~=0.15.0" },
     { name = "tach", specifier = ">=0.34.0" },
