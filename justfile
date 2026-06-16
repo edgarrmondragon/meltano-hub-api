@@ -65,4 +65,4 @@ tach:
 # Run OpenAPI checks with Schemathesis
 [group('test')]
 api host="127.0.0.1": build-db
-    uvx --python={{py}} --from=schemathesis st run --checks all --base-url http://{{host}}:{{port}} --experimental=openapi-3.1 http://{{host}}:{{port}}/openapi.json
+    uvx --python={{py}} --from=schemathesis st run http://{{host}}:{{port}}/openapi.json

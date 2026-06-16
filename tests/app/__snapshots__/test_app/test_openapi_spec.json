@@ -4920,7 +4920,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -4979,7 +4978,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5045,7 +5043,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5094,7 +5091,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5175,7 +5171,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5265,7 +5260,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5317,7 +5311,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5384,7 +5377,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5475,7 +5467,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }
@@ -5555,7 +5546,6 @@
             "required": false,
             "schema": {
               "description": "The `If-None-Match` HTTP request header makes the request conditional.\nFor `GET` and `HEAD` methods, the server will return the requested resource, with a `200` status, only if it doesn't have an `ETag` matching the given ones.\nFor other methods, the request will be processed only if the eventually existing resource's `ETag` doesn't match any of the values listed.\n\nhttps://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match\n",
-              "pattern": "^\"etag-[0-9a-f]{16}\"$",
               "title": "If-None-Match",
               "type": "string"
             }

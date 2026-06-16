@@ -197,16 +197,6 @@ async def test_plugin_type_index_type_not_valid(api: httpx.AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_invalid_etag(api: httpx.AsyncClient) -> None:
-    """Test /meltano/api/v1/plugins/stats."""
-    response = await api.get(
-        "/meltano/api/v1/plugins/index",
-        headers={"If-None-Match": "not-a-valid-etag"},
-    )
-    assert response.status_code == http.HTTPStatus.UNPROCESSABLE_ENTITY
-
-
-@pytest.mark.asyncio
 async def test_plugin_variant_not_found(api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/plugins/extractors/<plugin>--<variant>."""
     response = await api.get("/meltano/api/v1/plugins/extractors/tap-github--unknown")
