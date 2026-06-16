@@ -74,16 +74,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 """
 
 
-def check_etag(
-    request: Request,
-    if_none_match: Annotated[
-        str,  # noqa: RUF013
-        Header(
-            description=DESCRIPTION,
-            pattern=r'^"etag-[0-9a-f]{16}"$',
-        ),
-    ] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default]
-) -> None:
+def check_etag(request: Request, if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None) -> None:  # type: ignore[assignment] # ty:ignore[invalid-parameter-default]  # noqa: RUF013
     """Get ETag value."""
     if if_none_match == _get_etag(request):
         raise HTTPException(status_code=http.HTTPStatus.NOT_MODIFIED)
