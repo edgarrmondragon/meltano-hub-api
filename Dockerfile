@@ -26,11 +26,11 @@ WORKDIR /app
 COPY --from=builder --chown=app:app /app /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --only-group build
+    uv sync --frozen --no-default-groups --group build
 
 # Build the database
 ARG HUB_REF=main
-RUN uv run python -I build.py --git-ref $HUB_REF --exit-zero
+RUN uv run --no-sync python -I build.py --git-ref $HUB_REF --exit-zero
 
 # Then, use a final image without uv
 FROM python:${PYTHON_VERSION}-slim-trixie
