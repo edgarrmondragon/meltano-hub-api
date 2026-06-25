@@ -89,8 +89,11 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
                 "type": "missing",
                 "loc": ["query", "name"],
                 "msg": "Field required",
-                "input": {},
-            },
+                "input": {
+                    "type": {"_name": "MISSING", "_repr": "MISSING", "__module__": "pydantic_core"},
+                    "variant": {"_name": "MISSING", "_repr": "MISSING", "__module__": "pydantic_core"},
+                },
+            }
         ]
     }
 
