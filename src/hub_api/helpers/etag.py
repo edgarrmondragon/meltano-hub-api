@@ -77,7 +77,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 
 def check_etag(
     request: Request,
-    if_none_match: Annotated[str | MISSING, Header(description=DESCRIPTION)] = MISSING,  # type: ignore[valid-type]
+    if_none_match: Annotated[str | MISSING, Header(description=DESCRIPTION)] = MISSING,
 ) -> None:
     """Get ETag value."""
     if if_none_match == _get_etag(request):
