@@ -49,7 +49,7 @@ tests = [
 typing = [
     { include-group = "build" },
     { include-group = "tests" },
-    "mypy~=2.3.0",
+    "mypy>=2.3",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "ty==0.0.61",
@@ -60,6 +60,9 @@ typing = [
 [tool.uv]
 preview = true
 required-version = ">=0.11"
+
+[tool.uv.sources]
+mypy = { git = "https://github.com/edgarrmondragon/--fork-mypy.git", rev = "sentinel-typevar-expand" }
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
