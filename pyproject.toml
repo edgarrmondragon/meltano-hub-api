@@ -16,6 +16,7 @@ dependencies = [
     "pydantic==2.14.0a1",
     "python-json-logger==4.1.0",
     "starlette==1.3.1",
+    "typing-extensions>=4.16.0",  # Transitive dependency of pydantic that we force to >=4.16.0 in order to get pickling support for the MISSING sentinel
 ]
 
 [dependency-groups]
@@ -63,6 +64,7 @@ required-version = ">=0.11"
 DEP002 = [
     "granian",  # Not imported, but used as the ASGI server as a uvicorn alternative
     "python-json-logger",  # Imported dynamically by logging configuration
+    "typing-extensions",  # Transitive dependency of pydantic that we force to >=4.16.0 in order to get pickling support for the MISSING sentinel
 ]
 
 [tool.ruff]
