@@ -58,6 +58,9 @@ typing = [
 [tool.uv]
 preview = true
 required-version = ">=0.12"
+override-dependencies = [
+    "mypy @ git+https://github.com/python/mypy.git@master"
+]
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
