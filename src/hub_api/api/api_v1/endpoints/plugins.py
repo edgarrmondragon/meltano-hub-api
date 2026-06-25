@@ -90,13 +90,13 @@ class FindParams(BaseModel):
         examples=["tap-github"],
     )
 
-    type: enums.PluginTypeEnum | MISSING = Field(  # type: ignore[valid-type]
+    type: enums.PluginTypeEnum | MISSING = Field(
         MISSING,
         description="The plugin type",
         examples=[enums.PluginTypeEnum.extractors],
     )
 
-    variant: str | MISSING = Field(  # type: ignore[valid-type]
+    variant: str | MISSING = Field(
         MISSING,
         description="The optional variant name",
         examples=["meltanolabs"],
@@ -116,8 +116,8 @@ async def find_plugin(
     hub: dependencies.Hub,
     params: Annotated[FindParams, fastapi.Query()],
 ) -> api_schemas.PluginDetails:
-    plugin_type = None if params.type is MISSING else params.type  # type: ignore[comparison-overlap,redundant-expr]
-    variant_name = None if params.variant is MISSING else params.variant  # type: ignore[comparison-overlap,redundant-expr]
+    plugin_type = None if params.type is MISSING else params.type
+    variant_name = None if params.variant is MISSING else params.variant
     return await hub.find_plugin(plugin_name=params.name, plugin_type=plugin_type, variant_name=variant_name)
 
 
