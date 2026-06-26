@@ -28,7 +28,7 @@ def base_url() -> str:
     return f"http://{faker.hostname()}"
 
 
-@pytest.fixture(scope="session", autouse=True)  # noqa: RUF076
+@pytest.fixture(scope="session", autouse=True)
 def _init_etags() -> None:
     etag.init(database.get_db_path())
 
