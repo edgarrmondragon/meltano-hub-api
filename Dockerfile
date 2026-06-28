@@ -30,7 +30,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Build the database
 ARG HUB_REF=main
-RUN uv run --no-sync python -I build.py --git-ref $HUB_REF --exit-zero
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv run --no-sync python -I build.py --git-ref $HUB_REF --exit-zero
 
 # Then, use a final image without uv
 FROM python:${PYTHON_VERSION}-slim-trixie
