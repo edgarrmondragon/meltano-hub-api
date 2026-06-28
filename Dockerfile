@@ -4,7 +4,8 @@ ARG PYTHON_VERSION=3.14
 
 FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION}-trixie-slim AS builder
 ENV UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/app/.venv
 
 WORKDIR /app
 
@@ -18,7 +19,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION}-trixie-slim AS database
 ENV UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/app/.venv
 
 WORKDIR /app
 
@@ -30,8 +32,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Build the database
 ARG HUB_REF=main
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv run --no-sync python -I build.py --git-ref $HUB_REF --exit-zero
+RUN uv run --no-sync python -I build.py --git-ref $HUB_REF --exit-zero
 
 # Then, use a final image without uv
 FROM python:${PYTHON_VERSION}-slim-trixie
@@ -40,7 +41,7 @@ FROM python:${PYTHON_VERSION}-slim-trixie
 # will fail.
 
 # Copy the application from the builder
-COPY --from=builder --chown=app:app /app /app
+COPY --from=builder /app /app
 
 # Copy the plugins database
 COPY --from=database /app/plugins.db /app/plugins.db
