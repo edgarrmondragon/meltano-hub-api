@@ -183,7 +183,7 @@ jobs:
         tox -e coverage -- html --skip-covered --skip-empty
 
         # Report and write to summary.
-        tox -qq -e coverage -- report --format=markdown >> $GITHUB_STEP_SUMMARY
+        tox -qq -e coverage -- report --format=markdown >> "$GITHUB_STEP_SUMMARY"
 
         # Report again and fail if under 100%.
         tox -e coverage
