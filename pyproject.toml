@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "aiosqlite==0.22.1",
-    "fastapi==0.138.1",
+    "fastapi==0.138.2",
     "granian[reload]==2.7.7",
     "packaging==26.2",
     "pydantic==2.14.0a1",
