@@ -7,7 +7,7 @@ import enum
 import re
 
 import packaging.version
-from starlette.requests import Request  # noqa: TC002
+from starlette.requests import Request  # ruff: ignore[typing-only-third-party-import]
 
 type VersionTuple = tuple[int, int]
 

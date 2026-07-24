@@ -1,4 +1,4 @@
-# noqa: I002
+from __future__ import annotations
 
 __all__ = ["NotFoundError"]
 

@@ -1,3 +1,5 @@
+# ruff: file-ignore[print]
+
 from __future__ import annotations
 
 import dataclasses
@@ -47,12 +49,16 @@ def download_meltano_hub_archive(*, ref: str = "main", use_cache: bool = True) -
 
         response = urllib3.request("GET", url, timeout=10.0, retries=3)
         if response.status != HTTPStatus.OK:
-            raise Exception(f"Failed to download archive: HTTP {response.status}")
+            msg = f"Failed to download archive: HTTP {response.status}"
+            raise Exception(msg)
 
         with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp_file:
             tmp_file.write(gzip.decompress(response.data))
             tmp_file.seek(0)
-            with tempfile.TemporaryDirectory() as extract_dir, tarfile.open(tmp_file.name) as tar:
+            with (
+                tempfile.TemporaryDirectory() as extract_dir,
+                tarfile.open(tmp_file.name) as tar,
+            ):
                 tar.extractall(extract_dir, filter="data")
                 extracted = tar.getnames()[0]
 
@@ -154,7 +160,7 @@ def _insert_row(connection: sqlite3.Connection, table: str, row: dict[str, Any])
     column_names = row.keys()
     columns = ", ".join(column_names)
     placeholders = ", ".join(f":{col}" for col in column_names)
-    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # noqa: S608
+    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # ruff: ignore[hardcoded-sql-expression]
     connection.execute(query, row)
 
 
@@ -166,7 +172,7 @@ def _insert_rows(connection: sqlite3.Connection, table: str, rows: Sequence[dict
     column_names = rows[0].keys()
     columns = ", ".join(column_names)
     placeholders = ", ".join(f":{col}" for col in column_names)
-    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # noqa: S608
+    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # ruff: ignore[hardcoded-sql-expression]
     connection.executemany(query, rows)
 
 
@@ -198,7 +204,7 @@ def _match_plugin(
     return plugin
 
 
-def _insert_variant(  # noqa: PLR0913
+def _insert_variant(  # ruff: ignore[too-many-arguments]
     *,
     connection: sqlite3.Connection,
     variant: str,
@@ -415,9 +421,9 @@ def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
 
 
 def main() -> int:
-    import argparse  # noqa: PLC0415
+    import argparse  # ruff: ignore[import-outside-top-level]
 
-    from hub_api import database  # noqa: PLC0415
+    from hub_api import database  # ruff: ignore[import-outside-top-level]
 
     class CLINamespace(argparse.Namespace):
         git_ref: str
@@ -433,13 +439,16 @@ def main() -> int:
 
     schema_sql = database.get_db_schema()
 
-    with tempfile.NamedTemporaryFile(suffix=".db") as tmp_file, sqlite3.connect(tmp_file.name) as connection:
+    with (
+        tempfile.NamedTemporaryFile(suffix=".db") as tmp_file,
+        sqlite3.connect(tmp_file.name) as connection,
+    ):
         connection.executescript(schema_sql)
 
         result = load_db(hub_dir / "_data", connection)
         print(result.to_markdown())
 
-        os.rename(tmp_file.name, database.get_db_path())  # noqa: PTH104
+        os.rename(tmp_file.name, database.get_db_path())  # ruff: ignore[os-rename]
 
     return 0 if args.exit_zero else 1 if result.errors else 0
 

@@ -34,7 +34,7 @@ async def fetch_all_dicts(db: aiosqlite.Connection, sql: str, params: dict[str, 
     return [dict(r) for r in rows]
 
 
-def json_load_maybe(v: Any) -> Any:  # noqa: ANN401
+def json_load_maybe(v: Any) -> Any:  # ruff: ignore[any-type]
     """Load JSON if value is a string, otherwise return as-is."""
     return json.loads(v) if isinstance(v, str) else v
 
@@ -159,7 +159,7 @@ class MeltanoHub:
         rows = await fetch_all_dicts(self.db, sql, {"variant_id": variant_id})
         return {r["key"]: json_load_maybe(r["value"]) for r in rows} if rows else None
 
-    async def _variant_details(  # noqa: PLR0911, PLR0912, PLR0914, C901
+    async def _variant_details(  # ruff: ignore[too-many-return-statements, too-many-branches, too-many-locals, complex-structure]
         self: MeltanoHub,
         variant_id: str,
     ) -> api_schemas.PluginDetails:
@@ -181,7 +181,7 @@ class MeltanoHub:
         setting_ids = [s["id"] for s in settings_rows]
         if setting_ids:
             placeholders = ",".join(f":sid{i}" for i in range(len(setting_ids)))
-            aliases_sql = f"SELECT setting_id, name FROM setting_aliases WHERE setting_id IN ({placeholders})"  # noqa: S608
+            aliases_sql = f"SELECT setting_id, name FROM setting_aliases WHERE setting_id IN ({placeholders})"  # ruff: ignore[hardcoded-sql-expression]
             aliases_params = {f"sid{i}": sid for i, sid in enumerate(setting_ids)}
             aliases_rows = await fetch_all_dicts(self.db, aliases_sql, aliases_params)
 
