@@ -6,7 +6,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field, HttpUrl, StringConstraints
 
-from hub_api import enums  # noqa: TC001
+from hub_api import enums  # ruff: ignore[typing-only-first-party-import]
 from hub_api.schemas import meltano
 
 

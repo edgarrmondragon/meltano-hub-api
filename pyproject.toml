@@ -33,7 +33,7 @@ dev = [
     { include-group = "typing" },
 ]
 lint = [
-    "ruff~=0.15.0",
+    "ruff~=0.16.0",
     "tach>=0.34.0",
 ]
 tests = [
@@ -68,10 +68,10 @@ DEP002 = [
 [tool.ruff]
 line-length = 120
 preview = true
-required-version = ">=0.15.14"
+required-version = ">=0.16"
 
 [tool.ruff.lint]
-ignore = ["COM812"]
+ignore = ["missing-trailing-comma"]
 select = [
     "F",     # PyFlakes
     "W",     # pycodestyle (Warning)
@@ -90,11 +90,22 @@ select = [
     "COM",   # flake8-commas
     "C4",    # flake8-comprehensions
     "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "EM",    # flake8-errmsg
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
     "ICN",   # flake8-import-conventions
+    "LOG",   # flake8-logging
+    "G",     # flake8-logging-format
+    "PIE",   # flake8-pie
+    "T20",   # flake8-print
     "PT",    # flake8-pytest-style
+    "RSE",   # flake8-raise
     "RET",   # flake8-return
     "SLF",   # flake8-self
     "SIM",   # flake8-simplify
+    "SLOT",  # flake8-slots
+    "TID",   # flake8-tidy-imports
     "TC",    # flake8-type-checking
     "ARG",   # flake8-unused-arguments
     "PTH",   # flake8-use-pathlib
@@ -111,7 +122,7 @@ select = [
 required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]
+"tests/*" = ["assert"]
 
 [tool.pytest]
 addopts = ["--durations=5", "-ra"]

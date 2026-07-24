@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict, Discriminator, Field, HttpUrl, RootModel, Tag
 
-from hub_api import enums  # noqa: TC001
+from hub_api import enums  # ruff: ignore[typing-only-first-party-import]
 
 
 class BaseModel(PydanticBaseModel):
@@ -333,13 +333,9 @@ class Loader(Plugin, extra="forbid"):
 class Utility(Plugin, extra="forbid"):
     """Utility details model."""
 
-    pass
-
 
 class Orchestrator(Plugin, extra="forbid"):
     """Orchestration details model."""
-
-    pass
 
 
 class Transform(Plugin, extra="forbid"):
@@ -350,8 +346,6 @@ class Transform(Plugin, extra="forbid"):
 
 class Transformer(Plugin, extra="forbid"):
     """Transformer details model."""
-
-    pass
 
 
 class Mapper(Plugin, extra="forbid"):

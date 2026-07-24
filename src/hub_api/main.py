@@ -26,7 +26,7 @@ view their details, and download the necessary files to install them.
 
 
 @asynccontextmanager
-async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # noqa: ARG001
+async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # ruff: ignore[unused-function-argument]
     etag.init(database.get_db_path())
     yield
 
@@ -50,7 +50,7 @@ app.add_middleware(etag.ETagMiddleware)
 
 @app.exception_handler(exceptions.NotFoundError)
 def not_found_exception_handler(
-    request: fastapi.Request,  # noqa: ARG001
+    request: fastapi.Request,  # ruff: ignore[unused-function-argument]
     exc: exceptions.NotFoundError,
 ) -> responses.JSONResponse:
     return responses.JSONResponse(
@@ -63,7 +63,7 @@ def not_found_exception_handler(
 
 @app.exception_handler(exceptions.BadParameterError)
 def bad_parameter_exception_handler(
-    request: fastapi.Request,  # noqa: ARG001
+    request: fastapi.Request,  # ruff: ignore[unused-function-argument]
     exc: exceptions.BadParameterError,
 ) -> responses.JSONResponse:
     return responses.JSONResponse(

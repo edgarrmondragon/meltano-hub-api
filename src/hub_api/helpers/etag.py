@@ -7,7 +7,9 @@ If they match, a 304 Not Modified response is returned. Otherwise, the response 
 normal.
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
-"""  # noqa: I002
+"""
+
+from __future__ import annotations
 
 import hashlib
 import http
@@ -25,12 +27,12 @@ if TYPE_CHECKING:
 
 
 def _compute_etag(
-    package_version: str,
+    version: str,
     db_mtime: int,
     compat: compatibility.Compatibility,
 ) -> str:
-    digest = hashlib.sha256(f"{package_version}:{db_mtime}:{compat.name}".encode()).hexdigest()[:16]
-    return f'"etag-{digest}"'
+    digest = hashlib.sha256(f"{version}:{db_mtime}:{compat.name}".encode()).hexdigest()
+    return f'"etag-{digest[:16]}"'
 
 
 ETAGS: dict[compatibility.Compatibility, str] = {}
@@ -74,7 +76,10 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 """
 
 
-def check_etag(request: Request, if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None) -> None:  # type: ignore[assignment] # ty:ignore[invalid-parameter-default]  # noqa: RUF013
+def check_etag(
+    request: Request,
+    if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default] # ruff: ignore[implicit-optional]
+) -> None:
     """Get ETag value."""
     if if_none_match == _get_etag(request):
         raise HTTPException(status_code=http.HTTPStatus.NOT_MODIFIED)
