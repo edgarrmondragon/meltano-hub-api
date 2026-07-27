@@ -48,7 +48,7 @@ tests = [
 typing = [
     { include-group = "build" },
     { include-group = "tests" },
-    "mypy~=2.1.0",
+    "mypy~=2.3.0",
     "ty==0.0.61",
     "types-PyYAML>=6.0.12.20240808",
     "types-requests>=2.32.0",
