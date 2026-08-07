@@ -7,6 +7,7 @@ from typing import Annotated
 import fastapi
 import fastapi.responses
 from pydantic import BaseModel, ConfigDict, Field
+from pydantic.experimental.missing_sentinel import MISSING
 
 from hub_api import dependencies, enums, ids
 from hub_api.helpers import compatibility
@@ -89,14 +90,14 @@ class FindParams(BaseModel):
         examples=["tap-github"],
     )
 
-    type: enums.PluginTypeEnum = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
-        None,
+    type: enums.PluginTypeEnum | MISSING = Field(
+        MISSING,
         description="The plugin type",
         examples=[enums.PluginTypeEnum.extractors],
     )
 
-    variant: str = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
-        None,
+    variant: str | MISSING = Field(
+        MISSING,
         description="The optional variant name",
         examples=["meltanolabs"],
     )
@@ -115,7 +116,9 @@ async def find_plugin(
     hub: dependencies.Hub,
     params: Annotated[FindParams, fastapi.Query()],
 ) -> api_schemas.PluginDetails:
-    return await hub.find_plugin(plugin_name=params.name, plugin_type=params.type, variant_name=params.variant)
+    plugin_type = None if params.type is MISSING else params.type
+    variant_name = None if params.variant is MISSING else params.variant
+    return await hub.find_plugin(plugin_name=params.name, plugin_type=plugin_type, variant_name=variant_name)
 
 
 @router.get(
