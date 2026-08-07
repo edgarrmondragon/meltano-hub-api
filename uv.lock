@@ -392,6 +392,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "python-json-logger" },
     { name = "starlette" },
+    { name = "typing-extensions" },
 ]
 
 [package.dev-dependencies]
