@@ -60,6 +60,7 @@ preview = true
 required-version = ">=0.11"
 
 [tool.uv.sources]
+fastapi = { git = "https://github.com/edgarrmondragon/--fork-fastapi", rev = "sentinels-py315" }
 mypy = { git = "https://github.com/python/mypy.git" }
 
 [tool.deptry.per_rule_ignores]
