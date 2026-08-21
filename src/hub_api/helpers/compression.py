@@ -71,7 +71,7 @@ class ZstdResponder(IdentityResponder):
         self.level = level
 
     @override
-    def apply_compression(self, body: bytes, **kwargs: Any) -> bytes:
+    async def apply_compression(self, body: bytes, **kwargs: Any) -> bytes:
         """Apply ZSTD compression to the body.
 
         Args:
