@@ -14,7 +14,7 @@ dependencies = [
     "granian[reload]==2.8.1",
     "packaging==26.2",
     "pydantic==2.14.0b1",
-    "python-json-logger==4.1.0",
+    "python-json-logger==4.2.0",
     "starlette==1.6.0",
 ]
 
