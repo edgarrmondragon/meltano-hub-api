@@ -49,6 +49,7 @@ typing = [
     { include-group = "build" },
     { include-group = "tests" },
     "mypy~=2.3.0",
+    "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "ty==0.0.61",
     "types-PyYAML>=6.0.12.20240808",
@@ -252,6 +253,25 @@ commands = [
         ], extend = true },
     ],
     [
+        "pyrefly",
+        "coverage",
+        "check",
+        { replace = "posargs", default = [
+            "src",
+            "tests",
+            "build.py",
+        ], extend = true },
+    ],
+    [
+        "pyrefly",
+        "check",
+        { replace = "posargs", default = [
+            "src",
+            "tests",
+            "build.py",
+        ], extend = true },
+    ],
+    [
         "pyright",
         { replace = "posargs", default = [
             "src",
@@ -325,6 +345,10 @@ commands = [
 
 [tool.ty.rules]
 unused-type-ignore-comment = "ignore"
+
+[tool.pyrefly]
+enabled-ignores = ["pyrefly"]
+preset = "strict"
 
 [build-system]
 requires = ["hatchling==1.32.0"]

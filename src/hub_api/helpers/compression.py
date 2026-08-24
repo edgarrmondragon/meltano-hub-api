@@ -58,7 +58,6 @@ class ZstdResponder(IdentityResponder):
 
     content_encoding = "zstd"
 
-    @override
     def __init__(self, app: ASGIApp, minimum_size: int, *, level: int = 22) -> None:
         """Initialize the ZSTD responder.
 
@@ -68,7 +67,7 @@ class ZstdResponder(IdentityResponder):
             level: ZSTD compression level (default 10)
         """
         super().__init__(app, minimum_size)
-        self.level = level
+        self.level: int = level
 
     @override
     async def apply_compression(self, body: bytes, **kwargs: Any) -> bytes:
@@ -98,8 +97,8 @@ class CompressionMiddleware:
             app: The ASGI application
             minimum_size: Minimum response size in bytes to trigger compression
         """
-        self.app = app
-        self.minimum_size = minimum_size
+        self.app: ASGIApp = app
+        self.minimum_size: int = minimum_size
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         """Handle the ASGI request.

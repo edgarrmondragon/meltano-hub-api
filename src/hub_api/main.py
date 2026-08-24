@@ -31,7 +31,7 @@ async def lifespan(app: fastapi.FastAPI) -> AsyncGenerator[None]:  # ruff: ignor
     yield
 
 
-app = fastapi.FastAPI(
+app: fastapi.FastAPI = fastapi.FastAPI(
     title="Meltano Hub API",
     description=DESCRIPTION,
     version=metadata.version("hub-api"),

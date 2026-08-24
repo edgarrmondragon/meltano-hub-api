@@ -12,7 +12,7 @@ from hub_api import dependencies, enums, ids
 from hub_api.helpers import compatibility
 from hub_api.schemas import api as api_schemas
 
-router = fastapi.APIRouter()
+router: fastapi.APIRouter = fastapi.APIRouter()
 
 
 PluginTypeParam = Annotated[
@@ -89,13 +89,13 @@ class FindParams(BaseModel):
         examples=["tap-github"],
     )
 
-    type: enums.PluginTypeEnum = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
+    type: enums.PluginTypeEnum = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]  # pyrefly:ignore[bad-assignment]
         None,
         description="The plugin type",
         examples=[enums.PluginTypeEnum.extractors],
     )
 
-    variant: str = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]
+    variant: str = Field(  # type: ignore[assignment]  # ty:ignore[invalid-assignment]  # pyrefly:ignore[bad-assignment]
         None,
         description="The optional variant name",
         examples=["meltanolabs"],

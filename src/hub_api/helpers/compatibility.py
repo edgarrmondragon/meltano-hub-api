@@ -12,7 +12,7 @@ from starlette.requests import Request  # ruff: ignore[typing-only-third-party-i
 type VersionTuple = tuple[int, int]
 
 LATEST = (999, 999)
-USER_AGENT_PATTERN = re.compile(r"^Meltano/(?P<version>[a-z0-9.]+)$")
+USER_AGENT_PATTERN: re.Pattern[str] = re.compile(r"^Meltano/(?P<version>[a-z0-9.]+)$")
 
 
 class Compatibility(enum.Enum):

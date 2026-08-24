@@ -78,7 +78,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 
 def check_etag(
     request: Request,
-    if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default] # ruff: ignore[implicit-optional]
+    if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default] # pyrefly:ignore[bad-function-definition] # ruff: ignore[implicit-optional]
 ) -> None:
     """Get ETag value."""
     if if_none_match == _get_etag(request):

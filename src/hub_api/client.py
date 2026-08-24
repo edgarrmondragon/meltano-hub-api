@@ -64,7 +64,7 @@ class PluginAmbiguityError(exceptions.BadParameterError):
     """Plugin ambiguity error."""
 
     def __init__(self, *, plugins: list[dict[str, Any]]) -> None:
-        self.plugins = plugins
+        self.plugins: list[dict[str, Any]] = plugins
         plugin_names = [f"{p['name']} ({p['plugin_type']})" for p in plugins]
         super().__init__(f"More than one plugin found for the given criteria: {', '.join(plugin_names)}")
 
@@ -141,7 +141,7 @@ class MeltanoHub:
         base_hub_url: str = BASE_HUB_URL,
     ) -> None:
         self.db: aiosqlite.Connection = db
-        self.base_url = base_url
+        self.base_url: str = base_url
         self.base_hub_url: str = base_hub_url
 
     async def _get_variant_capabilities(self: MeltanoHub, variant_id: str) -> list[str]:
