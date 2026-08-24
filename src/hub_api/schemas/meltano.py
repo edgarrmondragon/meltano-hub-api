@@ -150,23 +150,26 @@ def _kind_discriminator(setting: dict[str, Any] | _BasePluginSetting) -> str:
     return getattr(setting, "kind", None) or "string"
 
 
-class PluginSetting(RootModel[_BasePluginSetting]):
-    root: Annotated[
-        Annotated[StringSetting, Tag("string")]
-        | Annotated[IntegerSetting, Tag("integer")]
-        | Annotated[DecimalSetting, Tag("decimal")]
-        | Annotated[BooleanSetting, Tag("boolean")]
-        | Annotated[DateIso8601Setting, Tag("date_iso8601")]
-        | Annotated[EmailSetting, Tag("email")]
-        | Annotated[PasswordSetting, Tag("password")]
-        | Annotated[OAuthSetting, Tag("oauth")]
-        | Annotated[OptionsSetting, Tag("options")]
-        | Annotated[FileSetting, Tag("file")]
-        | Annotated[ArraySetting, Tag("array")]
-        | Annotated[ObjectSetting, Tag("object")]
-        | Annotated[HiddenSetting, Tag("hidden")],
-        Discriminator(_kind_discriminator),
+class PluginSetting(
+    RootModel[
+        Annotated[
+            Annotated[StringSetting, Tag("string")]
+            | Annotated[IntegerSetting, Tag("integer")]
+            | Annotated[DecimalSetting, Tag("decimal")]
+            | Annotated[BooleanSetting, Tag("boolean")]
+            | Annotated[DateIso8601Setting, Tag("date_iso8601")]
+            | Annotated[EmailSetting, Tag("email")]
+            | Annotated[PasswordSetting, Tag("password")]
+            | Annotated[OAuthSetting, Tag("oauth")]
+            | Annotated[OptionsSetting, Tag("options")]
+            | Annotated[FileSetting, Tag("file")]
+            | Annotated[ArraySetting, Tag("array")]
+            | Annotated[ObjectSetting, Tag("object")]
+            | Annotated[HiddenSetting, Tag("hidden")],
+            Discriminator(_kind_discriminator),
+        ]
     ]
+): ...
 
 
 class Command(BaseModel):
