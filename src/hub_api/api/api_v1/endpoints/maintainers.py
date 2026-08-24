@@ -9,7 +9,7 @@ import fastapi
 from hub_api import dependencies  # ruff: ignore[typing-only-first-party-import]
 from hub_api.schemas import api as api_schemas  # ruff: ignore[typing-only-first-party-import]
 
-router = fastapi.APIRouter()
+router: fastapi.APIRouter = fastapi.APIRouter()
 
 
 @router.get(

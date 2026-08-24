@@ -228,7 +228,7 @@ async def test_get_default_variant_url(hub: client.MeltanoHub) -> None:
     """Test get_variant_url."""
     good_plugin_id = ids.PluginID.from_params(plugin_type="extractors", plugin_name="tap-github")
     url = await hub.get_default_variant_url(good_plugin_id)
-    assert str(url).endswith("extractors/tap-github--meltanolabs")
+    assert url.endswith("extractors/tap-github--meltanolabs")
 
     bad_plugin_id = ids.PluginID.from_params(plugin_type="extractors", plugin_name="unknown")
     with pytest.raises(client.PluginNotFoundError):
