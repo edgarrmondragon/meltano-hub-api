@@ -4,7 +4,7 @@ This middleware supports both GZIP and ZSTD compression, with intelligent
 negotiation based on the client's Accept-Encoding header. ZSTD is preferred
 over GZIP when both are supported by the client.
 
-Uses Python 3.14's native ZSTD support via the compression.zstd module.
+Uses Python 3.14+ native ZSTD support via the compression.zstd module.
 Follows the Starlette GZipMiddleware responder pattern.
 """
 
