@@ -214,29 +214,6 @@ site
 # gitignore all content, including this .gitignore
 .tach/**/*
 
-# flyctl launch added from .tox/3.13/.gitignore
-.tox/3.13/**/*
-
-# flyctl launch added from .tox/3.13/.pytest_cache/.gitignore
-# Created by pytest automatically.
-.tox/3.13/.pytest_cache/**/*
-
-# flyctl launch added from .tox/3.14/.gitignore
-.tox/3.14/**/*
-
-# flyctl launch added from .tox/build/.gitignore
-.tox/build/**/*
-
-# flyctl launch added from .tox/coverage/.gitignore
-.tox/coverage/**/*
-
-# flyctl launch added from .tox/coverage/.pytest_cache/.gitignore
-# Created by pytest automatically.
-.tox/coverage/.pytest_cache/**/*
-
-# flyctl launch added from .tox/typing/.gitignore
-.tox/typing/**/*
-
 # flyctl launch added from .venv/.gitignore
 .venv/**/*
 
