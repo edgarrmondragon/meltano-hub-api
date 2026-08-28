@@ -7,7 +7,7 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 dependencies = [
     "aiosqlite==0.22.1",
     "fastapi==0.141.1",
@@ -159,8 +159,8 @@ requires = ["tox>=4.51", "tox-uv"]
 env_list = [
     "format",
     "build",
-    "3.14",
-    "3.14t",
+    "3.15",
+    "3.15t",
     "combine",
     "coverage",
     "dependencies",
@@ -300,14 +300,14 @@ commands = [
     ],
 ]
 
-[tool.tox.env."3.14"]
+[tool.tox.env."3.15"]
 depends = ["build"]
 
 [tool.tox.env.combine]
 description = "combine coverage reports"
 skip_install = true
 dependency_groups = [ "coverage" ]
-depends = ["3.14"]
+depends = ["3.15"]
 commands = [[ "coverage", "combine" ]]
 
 [tool.tox.env.coverage]
