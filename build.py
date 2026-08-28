@@ -44,7 +44,7 @@ def download_meltano_hub_archive(*, ref: str = "main", use_cache: bool = True) -
 
     else:
         shutil.rmtree(cached_tree, ignore_errors=True)
-        url = f"https://github.com/meltano/hub/archive/{ref}.tar.gz"
+        url = f"https://codeload.github.com/meltano/hub/tar.gz/refs/heads/{ref}"
         logger.info("Downloading archive %s", url)
 
         response = urllib3.request("GET", url, timeout=10.0, retries=3)
