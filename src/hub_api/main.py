@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING
 
 import fastapi
 from fastapi import responses, staticfiles
+from fastapi.encoders import ENCODERS_BY_TYPE
+from typing_extensions import Sentinel
 
 from hub_api import api, database, exceptions
 from hub_api.helpers import compression, etag
@@ -23,6 +25,9 @@ view their details, and download the necessary files to install them.
 - The API is versioned, with the current version being v1.
 - The API is read-only, and no authentication is required.
 """
+
+# TODO: Remove once https://github.com/fastapi/fastapi/discussions/16158 is resolved
+ENCODERS_BY_TYPE[Sentinel] = repr
 
 
 @asynccontextmanager

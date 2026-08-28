@@ -17,6 +17,7 @@ import importlib.metadata
 from typing import TYPE_CHECKING, Annotated, override
 
 from fastapi import Header, HTTPException, Request, Response
+from pydantic.experimental.missing_sentinel import MISSING
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from . import compatibility
@@ -78,7 +79,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
 
 def check_etag(
     request: Request,
-    if_none_match: Annotated[str, Header(description=DESCRIPTION)] = None,  # type: ignore[assignment] # ty:ignore[invalid-parameter-default] # pyrefly:ignore[bad-function-definition] # ruff: ignore[implicit-optional]
+    if_none_match: Annotated[str | MISSING, Header(description=DESCRIPTION)] = MISSING,
 ) -> None:
     """Get ETag value."""
     if if_none_match == _get_etag(request):

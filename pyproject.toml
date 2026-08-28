@@ -16,6 +16,7 @@ dependencies = [
     "pydantic==2.14.0b1",
     "python-json-logger==4.2.0",
     "starlette==1.6.0",
+    "typing-extensions>=4.16.0",  # Transitive dependency of pydantic that we force to >=4.16.0 in order to get pickling support for the MISSING sentinel
 ]
 
 [dependency-groups]
@@ -48,7 +49,7 @@ tests = [
 typing = [
     { include-group = "build" },
     { include-group = "tests" },
-    "mypy~=2.3.0",
+    "mypy>=2.3",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "ty==0.0.61",
@@ -59,6 +60,9 @@ typing = [
 [tool.uv]
 preview = true
 required-version = ">=0.11"
+
+[tool.uv.sources]
+mypy = { git = "https://github.com/edgarrmondragon/--fork-mypy.git", rev = "sentinel-typevar-expand" }
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
