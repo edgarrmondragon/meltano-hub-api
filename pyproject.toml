@@ -43,7 +43,7 @@ tests = [
     "pytest~=9.0",
     "pytest-asyncio~=1.3",
     "pytest-github-actions-annotate-failures~=0.3",
-    "syrupy~=5.0",
+    "syrupy~=6.0",
 ]
 typing = [
     { include-group = "build" },
