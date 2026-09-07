@@ -67,6 +67,7 @@ class LoaderCapabilityEnum(_HyphenatedEnum):
 
     about = enum.auto()
     activate_version = enum.auto()
+    batch = enum.auto()
     datatype_failsafe = enum.auto()
     hard_delete = enum.auto()
     schema_flattening = enum.auto()
