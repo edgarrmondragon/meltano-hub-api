@@ -30,7 +30,6 @@ jobs:
     name: Get Hub Data
     runs-on: ubuntu-24.04
     permissions:
-      checks: write # add a check run
       pull-requests: write # update comment with build results
     continue-on-error: false
     steps:
@@ -128,6 +127,7 @@ jobs:
     name: Schemathesis Test
     runs-on: ubuntu-24.04
     permissions:
+      checks: write # add a check run
       pull-requests: write # update PR with test results
     steps:
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
