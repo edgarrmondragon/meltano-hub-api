@@ -58,7 +58,7 @@ typing = [
 
 [tool.uv]
 preview = true
-required-version = ">=0.11"
+required-version = ">=0.12"
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
@@ -235,6 +235,7 @@ description = "run type checking"
 labels = ["check"]
 dependency_groups = ["typing"]
 commands = [
+    [ "mypy", "--version" ],
     [
         "mypy",
         { replace = "posargs", default = [
@@ -243,6 +244,7 @@ commands = [
             "build.py",
         ], extend = true },
     ],
+    [ "ty", "--version" ],
     [
         "ty",
         "check",
@@ -252,6 +254,7 @@ commands = [
             "build.py",
         ], extend = true },
     ],
+    [ "pyrefly", "--version" ],
     [
         "pyrefly",
         "coverage",
@@ -271,6 +274,7 @@ commands = [
             "build.py",
         ], extend = true },
     ],
+    [ "pyright", "--version" ],
     [
         "pyright",
         { replace = "posargs", default = [
