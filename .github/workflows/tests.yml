@@ -30,6 +30,7 @@ jobs:
     name: Get Hub Data
     runs-on: ubuntu-24.04
     permissions:
+      checks: write # add a check run
       pull-requests: write # update comment with build results
     continue-on-error: false
     steps:
