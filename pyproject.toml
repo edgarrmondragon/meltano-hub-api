@@ -16,6 +16,7 @@ dependencies = [
     "pydantic==2.14.0b2",
     "python-json-logger==4.2.0",
     "starlette==1.6.0",
+    "typing-extensions>=4.16.0",
 ]
 
 [dependency-groups]
@@ -58,6 +59,9 @@ typing = [
 [tool.uv]
 preview = true
 required-version = ">=0.12"
+override-dependencies = [
+    "mypy @ git+https://github.com/python/mypy.git@master"
+]
 
 [tool.deptry.per_rule_ignores]
 DEP002 = [
