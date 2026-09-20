@@ -5363,12 +5363,11 @@
             "name": "plugin_type",
             "required": true,
             "schema": {
+              "$ref": "#/components/schemas/PluginTypeEnum",
               "description": "The plugin type",
               "examples": [
                 "extractors"
-              ],
-              "title": "Plugin Type",
-              "type": "string"
+              ]
             }
           },
           {
@@ -5425,12 +5424,11 @@
             "name": "plugin_type",
             "required": true,
             "schema": {
+              "$ref": "#/components/schemas/PluginTypeEnum",
               "description": "The plugin type",
               "examples": [
                 "extractors"
-              ],
-              "title": "Plugin Type",
-              "type": "string"
+              ]
             }
           },
           {
@@ -5443,6 +5441,7 @@
               "examples": [
                 "tap-github"
               ],
+              "pattern": "^[A-Za-z0-9-]+$",
               "title": "Plugin Name",
               "type": "string"
             }
@@ -5457,6 +5456,7 @@
               "examples": [
                 "meltanolabs"
               ],
+              "pattern": "^[A-Za-z0-9-]+$",
               "title": "Plugin Variant",
               "type": "string"
             }
@@ -5518,12 +5518,11 @@
             "name": "plugin_type",
             "required": true,
             "schema": {
+              "$ref": "#/components/schemas/PluginTypeEnum",
               "description": "The plugin type",
               "examples": [
                 "extractors"
-              ],
-              "title": "Plugin Type",
-              "type": "string"
+              ]
             }
           },
           {
@@ -5536,6 +5535,7 @@
               "examples": [
                 "tap-github"
               ],
+              "pattern": "^[A-Za-z0-9-]+$",
               "title": "Plugin Name",
               "type": "string"
             }

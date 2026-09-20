@@ -195,8 +195,20 @@ async def test_plugin_index_etag_match(
 async def test_plugin_type_index_type_not_valid(api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/plugins/<invalid_type>/index."""
     response = await api.get("/meltano/api/v1/plugins/unknown/index")
-    assert response.status_code == http.HTTPStatus.BAD_REQUEST
-    assert response.json()["detail"] == "'unknown' is not a valid plugin type"
+    assert response.status_code == http.HTTPStatus.UNPROCESSABLE_CONTENT
+    assert response.json() == {
+        "detail": [
+            {
+                "type": "enum",
+                "loc": ["path", "plugin_type"],
+                "msg": "Input should be 'extractors', 'loaders', 'transformers', 'utilities', 'transforms', 'orchestrators', 'mappers' or 'files'",  # ruff: ignore[line-too-long]
+                "input": "unknown",
+                "ctx": {
+                    "expected": "'extractors', 'loaders', 'transformers', 'utilities', 'transforms', 'orchestrators', 'mappers' or 'files'"  # ruff: ignore[line-too-long]
+                },
+            },
+        ],
+    }
 
 
 @pytest.mark.asyncio

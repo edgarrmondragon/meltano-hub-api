@@ -16,8 +16,7 @@ router: fastapi.APIRouter = fastapi.APIRouter()
 
 
 PluginTypeParam = Annotated[
-    str,
-    # enums.PluginTypeEnum,  # TODO: Schemathesis doesn't like constraints on path parameters
+    enums.PluginTypeEnum,
     fastapi.Path(
         ...,
         description="The plugin type",
@@ -32,7 +31,7 @@ PluginNameParam = Annotated[
     fastapi.Path(
         ...,
         description="The plugin name",
-        # pattern=r"^[A-Za-z0-9-]+$",  # TODO: Schemathesis doesn't like constraints on path parameters
+        pattern=r"^[A-Za-z0-9-]+$",
         examples=[
             "tap-github",
         ],
@@ -44,7 +43,7 @@ PluginVariantParam = Annotated[
     fastapi.Path(
         ...,
         description="The plugin variant",
-        # pattern=r"^[A-Za-z0-9-]+$",  # TODO: Schemathesis doesn't like constraints on path parameters
+        pattern=r"^[A-Za-z0-9-]+$",
         examples=[
             "meltanolabs",
         ],
