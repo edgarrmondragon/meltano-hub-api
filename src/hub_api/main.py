@@ -65,18 +65,5 @@ def not_found_exception_handler(
     )
 
 
-@app.exception_handler(exceptions.BadParameterError)
-def bad_parameter_exception_handler(
-    request: fastapi.Request,  # ruff: ignore[unused-function-argument]
-    exc: exceptions.BadParameterError,
-) -> responses.JSONResponse:
-    return responses.JSONResponse(
-        status_code=http.HTTPStatus.BAD_REQUEST,
-        content={
-            "detail": exc.args[0],
-        },
-    )
-
-
 app.include_router(api.v1.api.router, prefix="/meltano/api/v1")
 app.mount("/assets", staticfiles.StaticFiles(packages=[("hub_api.static", "assets")]), name="assets")
