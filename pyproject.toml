@@ -24,7 +24,7 @@ build = [
     "PyYAML~=6.0",
     "urllib3~=2.7.0",
 ]
-coverage = ["coverage~=7.13"]
+coverage = ["coverage>=7.16.1,<8"]
 dev = [
     "deptry>=0.24.0",
     { include-group = "build" },

@@ -7,7 +7,8 @@ from typing import Annotated
 import fastapi
 
 from hub_api import dependencies  # ruff: ignore[typing-only-first-party-import]
-from hub_api.schemas import api as api_schemas  # ruff: ignore[typing-only-first-party-import]
+from hub_api.schemas import api as api_schemas
+from hub_api.schemas import rfc9457
 
 router: fastapi.APIRouter = fastapi.APIRouter()
 
@@ -50,7 +51,7 @@ async def get_top_maintainers(
     summary="Get maintainer details",
     response_model_exclude_none=True,
     responses={
-        404: {"description": "Maintainer not found"},
+        404: {"description": "Maintainer not found", "model": rfc9457.Problem},
     },
     operation_id="get_maintainer",
 )

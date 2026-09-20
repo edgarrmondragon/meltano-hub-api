@@ -49,6 +49,30 @@ async def test_lifespan() -> None:
 
 
 @pytest.mark.asyncio
+async def test_http_exception_handler_not_found(api: httpx.AsyncClient) -> None:
+    """Test that a framework-raised 404 (e.g. an unmatched route) is formatted as an RFC 9457 problem."""
+    response = await api.get("/this-route-does-not-exist")
+    assert response.status_code == http.HTTPStatus.NOT_FOUND
+    assert response.json() == {
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+    }
+
+
+@pytest.mark.asyncio
+async def test_http_exception_handler_method_not_allowed(api: httpx.AsyncClient) -> None:
+    """Test that a framework-raised 405 is formatted as an RFC 9457 problem with the correct status and type."""
+    response = await api.post("/meltano/api/v1/plugins/index")
+    assert response.status_code == http.HTTPStatus.METHOD_NOT_ALLOWED
+    assert response.json() == {
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/405",
+        "status": http.HTTPStatus.METHOD_NOT_ALLOWED,
+        "title": "Method Not Allowed",
+    }
+
+
+@pytest.mark.asyncio
 async def test_plugin_index(base_url: str, api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/plugins/extractors/index."""
     response = await api.get("/meltano/api/v1/plugins/index")
@@ -84,7 +108,10 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
     response = await api.get("/meltano/api/v1/plugins/search")
     assert response.status_code == http.HTTPStatus.UNPROCESSABLE_ENTITY
     assert response.json() == {
-        "detail": [
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/422",
+        "status": http.HTTPStatus.UNPROCESSABLE_ENTITY,
+        "title": "Validation error",
+        "errors": [
             {
                 "type": "missing",
                 "loc": ["query", "name"],
@@ -94,7 +121,7 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
                     "variant": "MISSING",
                 },
             }
-        ]
+        ],
     }
 
     response = await api.get(
@@ -111,7 +138,12 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
         follow_redirects=True,
     )
     assert response.status_code == http.HTTPStatus.NOT_FOUND
-    assert response.json() == {"detail": "Plugin 'tap-unknown' was not found"}
+    assert response.json() == {
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "detail": "Plugin 'tap-unknown' was not found",
+    }
 
     response = await api.get(
         "/meltano/api/v1/plugins/search",
@@ -119,7 +151,12 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
         follow_redirects=True,
     )
     assert response.status_code == http.HTTPStatus.NOT_FOUND
-    assert response.json() == {"detail": "Variant 'unknown' of 'tap-github' was not found"}
+    assert response.json() == {
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "detail": "Variant 'unknown' of 'tap-github' was not found",
+    }
 
     response = await api.get(
         "/meltano/api/v1/plugins/search",
@@ -127,7 +164,25 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
         follow_redirects=True,
     )
     assert response.status_code == http.HTTPStatus.NOT_FOUND
-    assert response.json() == {"detail": "Plugin 'tap-github' was not found in loaders"}
+    assert response.json() == {
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "detail": "Plugin 'tap-github' was not found in loaders",
+    }
+
+    response = await api.get(
+        "/meltano/api/v1/plugins/search",
+        params={"name": "airflow"},
+        follow_redirects=True,
+    )
+    assert response.status_code == http.HTTPStatus.BAD_REQUEST
+    assert response.json() == {
+        "status": http.HTTPStatus.BAD_REQUEST,
+        "title": "Bad Parameter",
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/400",
+        "detail": "More than one plugin found for the given criteria: airflow (utilities), airflow (orchestrators)",
+    }
 
 
 @pytest.mark.asyncio
@@ -195,9 +250,12 @@ async def test_plugin_index_etag_match(
 async def test_plugin_type_index_type_not_valid(api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/plugins/<invalid_type>/index."""
     response = await api.get("/meltano/api/v1/plugins/unknown/index")
-    assert response.status_code == http.HTTPStatus.UNPROCESSABLE_CONTENT
+    assert response.status_code == http.HTTPStatus.UNPROCESSABLE_ENTITY
     assert response.json() == {
-        "detail": [
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/422",
+        "status": http.HTTPStatus.UNPROCESSABLE_ENTITY,
+        "title": "Validation error",
+        "errors": [
             {
                 "type": "enum",
                 "loc": ["path", "plugin_type"],
@@ -216,6 +274,12 @@ async def test_plugin_variant_not_found(api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/plugins/extractors/<plugin>--<variant>."""
     response = await api.get("/meltano/api/v1/plugins/extractors/tap-github--unknown")
     assert response.status_code == http.HTTPStatus.NOT_FOUND
+    assert response.json() == {
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+        "detail": "Variant 'unknown' of 'tap-github' was not found in extractors",
+    }
 
 
 @pytest.mark.asyncio
@@ -261,6 +325,20 @@ async def test_maintainer_details(api: httpx.AsyncClient) -> None:
     assert maintainer["url"] == "https://github.com/edgarrmondragon"
     assert isinstance(maintainer["links"], dict)
     assert len(maintainer["links"]) > 0
+
+
+@pytest.mark.asyncio
+async def test_maintainer_not_found(api: httpx.AsyncClient) -> None:
+    """Test /meltano/api/v1/maintainers."""
+    response = await api.get("/meltano/api/v1/maintainers/not-a-maintainer", follow_redirects=True)
+    assert response.status_code == http.HTTPStatus.NOT_FOUND
+
+    assert response.json() == {
+        "type": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
+        "status": http.HTTPStatus.NOT_FOUND,
+        "title": "Not Found",
+        "detail": "Maintainer 'not-a-maintainer' not found",
+    }
 
 
 @pytest.mark.asyncio

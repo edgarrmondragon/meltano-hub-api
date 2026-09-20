@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["NotFoundError"]
+__all__ = ["BadParameterError", "NotFoundError"]
 
 
 class NotFoundError(Exception):

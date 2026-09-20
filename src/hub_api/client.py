@@ -405,7 +405,7 @@ class MeltanoHub:
     async def get_plugin_type_index(
         self: MeltanoHub,
         *,
-        plugin_type: str,
+        plugin_type: enums.PluginTypeEnum,
     ) -> api_schemas.PluginTypeIndex:
         """Get all plugins of a given type.
 
@@ -418,14 +418,9 @@ class MeltanoHub:
         Raises:
             NotFoundError: If the plugin type is not valid.
         """
-        try:
-            plugin_type_enum = enums.PluginTypeEnum(plugin_type)
-        except ValueError:
-            raise ids.InvalidPluginTypeError(plugin_type=plugin_type) from None
-
         plugins: api_schemas.PluginTypeIndex = {}
 
-        for row in await self._get_all_plugins(plugin_type=plugin_type_enum):
+        for row in await self._get_all_plugins(plugin_type=plugin_type):
             plugin_name = row["name"]
             variant_name = row["variant"]
             logo_url = row["logo_url"]
@@ -440,7 +435,7 @@ class MeltanoHub:
 
             plugins[plugin_name].variants[variant_name] = api_schemas.VariantReference(
                 ref=_build_variant_path(
-                    plugin_type=plugin_type_enum,
+                    plugin_type=plugin_type,
                     plugin_name=plugin_name,
                     plugin_variant=variant_name,
                     base_url=self.base_url,

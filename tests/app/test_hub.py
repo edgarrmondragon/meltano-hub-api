@@ -36,30 +36,18 @@ async def hub(base_url: str) -> AsyncGenerator[client.MeltanoHub]:
 
 def test_plugin_id() -> None:
     """Test plugin ID."""
-    plugin_id = ids.PluginID.from_params(plugin_type="extractors", plugin_name="tap-github")
+    plugin_id = ids.PluginID.from_params(plugin_type=enums.PluginTypeEnum.extractors, plugin_name="tap-github")
     assert plugin_id.as_db_id() == "extractors.tap-github"
-
-
-def test_plugin_id_invalid_type() -> None:
-    """Test plugin ID."""
-    with pytest.raises(ids.InvalidPluginTypeError):
-        ids.PluginID.from_params(plugin_type="unknown", plugin_name="tap-github")
 
 
 def test_variant_id() -> None:
     """Test variant ID."""
     variant_id = ids.VariantID.from_params(
-        plugin_type="extractors",
+        plugin_type=enums.PluginTypeEnum.extractors,
         plugin_name="tap-github",
         plugin_variant="singer-io",
     )
     assert variant_id.as_db_id() == "extractors.tap-github.singer-io"
-
-
-def test_variant_id_invalid_type() -> None:
-    """Test variant ID."""
-    with pytest.raises(ids.InvalidPluginTypeError):
-        ids.VariantID.from_params(plugin_type="unknown", plugin_name="tap-github", plugin_variant="singer-io")
 
 
 @pytest.mark.asyncio
@@ -123,13 +111,6 @@ async def test_get_plugin_type_index(hub: client.MeltanoHub, plugin_type: enums.
 
 
 @pytest.mark.asyncio
-async def test_get_plugin_type_index_type_not_valid(hub: client.MeltanoHub) -> None:
-    """Test get_plugin_type_index."""
-    with pytest.raises(ids.InvalidPluginTypeError):
-        await hub.get_plugin_type_index(plugin_type="unknown")
-
-
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("plugin", "plugin_type", "variant"),
     [
@@ -150,7 +131,7 @@ async def test_get_plugin_type_index_type_not_valid(hub: client.MeltanoHub) -> N
 async def test_get_plugin_details(
     hub: client.MeltanoHub,
     plugin: str,
-    plugin_type: str,
+    plugin_type: enums.PluginTypeEnum,
     variant: str,
 ) -> None:
     """Test get_plugin_details."""
@@ -166,7 +147,7 @@ async def test_get_plugin_variant_not_found(hub: client.MeltanoHub) -> None:
     with pytest.raises(client.PluginNotFoundError):
         await hub.get_plugin_details(
             variant_id=ids.VariantID.from_params(
-                plugin_type="extractors",
+                plugin_type=enums.PluginTypeEnum.extractors,
                 plugin_name="tap-github",
                 plugin_variant="unknown",
             )
@@ -226,11 +207,11 @@ async def test_get_top_maintainers(hub: client.MeltanoHub) -> None:
 @pytest.mark.asyncio
 async def test_get_default_variant_url(hub: client.MeltanoHub) -> None:
     """Test get_variant_url."""
-    good_plugin_id = ids.PluginID.from_params(plugin_type="extractors", plugin_name="tap-github")
+    good_plugin_id = ids.PluginID.from_params(plugin_type=enums.PluginTypeEnum.extractors, plugin_name="tap-github")
     url = await hub.get_default_variant_url(good_plugin_id)
     assert url.endswith("extractors/tap-github--meltanolabs")
 
-    bad_plugin_id = ids.PluginID.from_params(plugin_type="extractors", plugin_name="unknown")
+    bad_plugin_id = ids.PluginID.from_params(plugin_type=enums.PluginTypeEnum.extractors, plugin_name="unknown")
     with pytest.raises(client.PluginNotFoundError):
         await hub.get_default_variant_url(bad_plugin_id)
 
@@ -384,7 +365,7 @@ async def test_get_plugin_details_meltano_version(
     hub = client.MeltanoHub(db=db, base_url=base_url)
     details = await hub.get_plugin_details(
         variant_id=ids.VariantID.from_params(
-            plugin_type="extractors",
+            plugin_type=enums.PluginTypeEnum.extractors,
             plugin_name="tap-mock",
             plugin_variant="singer",
         ),

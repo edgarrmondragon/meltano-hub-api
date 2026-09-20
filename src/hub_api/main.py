@@ -8,11 +8,14 @@ from importlib import metadata
 from typing import TYPE_CHECKING
 
 import fastapi
-from fastapi import responses, staticfiles
+from fastapi import staticfiles
 from fastapi.encoders import ENCODERS_BY_TYPE
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException
 
-from hub_api import api, database, exceptions
+from hub_api import api, database, exception_handlers, exceptions
 from hub_api.helpers import compression, etag
+from hub_api.schemas import rfc9457
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
@@ -47,23 +50,27 @@ app: fastapi.FastAPI = fastapi.FastAPI(
             "description": "Local development server",
         },
     ],
+    responses={
+        http.HTTPStatus.METHOD_NOT_ALLOWED: {
+            "description": "Method Not Allowed",
+            "model": rfc9457.Problem,
+        },
+        http.HTTPStatus.UNPROCESSABLE_ENTITY: {
+            "description": "Validation Error",
+            "model": rfc9457.ValidationErrorProblem,
+        },
+        http.HTTPStatus.INTERNAL_SERVER_ERROR: {
+            "description": "Internal Server Error",
+            "model": rfc9457.Problem,
+        },
+    },
 )
 app.add_middleware(compression.CompressionMiddleware, minimum_size=1000)
 app.add_middleware(etag.ETagMiddleware)
-
-
-@app.exception_handler(exceptions.NotFoundError)
-def not_found_exception_handler(
-    request: fastapi.Request,  # ruff: ignore[unused-function-argument]
-    exc: exceptions.NotFoundError,
-) -> responses.JSONResponse:
-    return responses.JSONResponse(
-        status_code=http.HTTPStatus.NOT_FOUND,
-        content={
-            "detail": exc.args[0],
-        },
-    )
-
+app.add_exception_handler(HTTPException, exception_handlers.http_exception_handler)  # type: ignore[arg-type] # ty: ignore[invalid-argument-type] # pyrefly: ignore[bad-argument-type]
+app.add_exception_handler(RequestValidationError, exception_handlers.request_validation_exception_handler)  # type: ignore[arg-type] # ty: ignore[invalid-argument-type] # pyrefly: ignore[bad-argument-type]
+app.add_exception_handler(exceptions.BadParameterError, exception_handlers.bad_parameter_exception_handler)  # type: ignore[arg-type] # ty: ignore[invalid-argument-type] # pyrefly: ignore[bad-argument-type]
+app.add_exception_handler(exceptions.NotFoundError, exception_handlers.not_found_exception_handler)  # type: ignore[arg-type] # ty: ignore[invalid-argument-type] # pyrefly: ignore[bad-argument-type]
 
 app.include_router(api.v1.api.router, prefix="/meltano/api/v1")
 app.mount("/assets", staticfiles.StaticFiles(packages=[("hub_api.static", "assets")]), name="assets")
