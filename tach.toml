@@ -45,6 +45,13 @@ path = "hub_api.exceptions"
 depends_on = []
 
 [[modules]]
+path = "hub_api.exception_handlers"
+depends_on = [
+    "hub_api.exceptions",
+    "hub_api.schemas",
+]
+
+[[modules]]
 path = "hub_api.helpers.compatibility"
 depends_on = []
 
@@ -62,7 +69,6 @@ depends_on = [
 path = "hub_api.ids"
 depends_on = [
     "hub_api.enums",
-    "hub_api.exceptions",
 ]
 
 [[modules]]
@@ -70,9 +76,11 @@ path = "hub_api.main"
 depends_on = [
     "hub_api.api",
     "hub_api.database",
+    "hub_api.exception_handlers",
     "hub_api.exceptions",
     "hub_api.helpers.compression",
     "hub_api.helpers.etag",
+    "hub_api.schemas",
 ]
 
 [[modules]]
@@ -89,6 +97,7 @@ depends_on = []
 expose = [
     "api",
     "meltano",
+    "rfc9457",
     "validation",
 ]
 from = [

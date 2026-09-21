@@ -11,6 +11,7 @@ from pydantic import MISSING, BaseModel, ConfigDict, Field
 from hub_api import dependencies, enums, ids
 from hub_api.helpers import compatibility
 from hub_api.schemas import api as api_schemas
+from hub_api.schemas import rfc9457
 
 router: fastapi.APIRouter = fastapi.APIRouter()
 
@@ -72,9 +73,6 @@ async def get_index(hub: dependencies.Hub) -> api_schemas.PluginIndex:
     "/{plugin_type}/index",
     summary="Get plugin type index",
     response_model_exclude_none=True,
-    responses={
-        400: {"description": "Not a valid plugin type"},
-    },
     operation_id="get_plugin_type_index",
 )
 async def get_type_index(hub: dependencies.Hub, plugin_type: PluginTypeParam) -> api_schemas.PluginTypeIndex:
@@ -105,8 +103,7 @@ class FindParams(BaseModel):
     "/search",
     summary="Find a plugin",
     responses={
-        400: {"description": "Not a valid plugin type"},
-        404: {"description": "Plugin not found"},
+        404: {"description": "Plugin not found", "model": rfc9457.Problem},
     },
     operation_id="get_plugin",
 )
@@ -123,8 +120,7 @@ async def find_plugin(
     "/{plugin_type}/{plugin_name}/default",
     summary="Get the default plugin variant",
     responses={
-        400: {"description": "Not a valid plugin type"},
-        404: {"description": "Plugin not found"},
+        404: {"description": "Plugin not found", "model": rfc9457.Problem},
     },
     operation_id="get_default_plugin",
 )
@@ -143,8 +139,7 @@ async def get_default_plugin(
     response_model_exclude_none=True,
     summary="Get plugin variant",
     responses={
-        400: {"description": "Not a valid plugin type"},
-        404: {"description": "Plugin variant not found"},
+        404: {"description": "Plugin variant not found", "model": rfc9457.Problem},
     },
     operation_id="get_plugin_variant",
 )
