@@ -1,4 +1,5 @@
 # ruff: file-ignore[print]
+# pyrefly: ignore-errors[unused-call-result]
 
 from __future__ import annotations
 
@@ -29,7 +30,6 @@ if TYPE_CHECKING:
 
     from pydantic_core import ErrorDetails
 
-logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger: logging.Logger = logging.getLogger(__name__)
 
 sqlite3.register_adapter(list, json.dumps)
@@ -53,8 +53,8 @@ def download_meltano_hub_archive(*, ref: str = "main", use_cache: bool = True) -
             raise Exception(msg)
 
         with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp_file:
-            tmp_file.write(gzip.decompress(response.data))
-            tmp_file.seek(0)
+            _ = tmp_file.write(gzip.decompress(response.data))
+            _ = tmp_file.seek(0)
             with (
                 tempfile.TemporaryDirectory() as extract_dir,
                 tarfile.open(tmp_file.name) as tar,
@@ -155,13 +155,14 @@ class LoadResult:
         return result
 
 
-def _insert_row(connection: sqlite3.Connection, table: str, row: dict[str, Any]) -> None:
+def _insert_row(connection: sqlite3.Connection, table: str, row: dict[str, Any]) -> tuple[Any, ...]:
     """Insert a row into the specified table."""
     column_names = row.keys()
     columns = ", ".join(column_names)
     placeholders = ", ".join(f":{col}" for col in column_names)
-    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # ruff: ignore[hardcoded-sql-expression]
-    connection.execute(query, row)
+    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) RETURNING *"  # ruff: ignore[hardcoded-sql-expression]
+    cursor = connection.execute(query, row)
+    return cursor.fetchone()  # type: ignore[no-any-return]
 
 
 def _insert_rows(connection: sqlite3.Connection, table: str, rows: Sequence[dict[str, Any]]) -> None:
@@ -231,7 +232,7 @@ def _insert_variant(  # ruff: ignore[too-many-arguments]
         return
 
     variant_id = f"{plugin_id}.{variant}"
-    _insert_row(
+    inserted = _insert_row(
         connection,
         "plugin_variants",
         {
@@ -261,10 +262,13 @@ def _insert_variant(  # ruff: ignore[too-many-arguments]
             else None,
         },
     )
+    logger.debug("Inserted variant %s", inserted[0])
 
     for setting in plugin.settings:
         setting_data, aliases_data = _build_setting(variant_id, setting)
-        _insert_row(connection, "settings", setting_data)
+        inserted = _insert_row(connection, "settings", setting_data)
+        logger.debug("Inserted setting %s", inserted[0])
+
         _insert_rows(connection, "setting_aliases", aliases_data)
 
     _insert_rows(
@@ -353,7 +357,8 @@ def _insert_variant(  # ruff: ignore[too-many-arguments]
                 "description": command.get("description"),
                 "executable": command.get("executable"),
             }
-        _insert_row(connection, "commands", command_details)
+        inserted = _insert_row(connection, "commands", command_details)
+        logger.debug("Inserted command %s", inserted[0])
 
 
 def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
@@ -397,7 +402,7 @@ def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
                 )
                 variant_count += 1
 
-            _insert_row(
+            inserted = _insert_row(
                 connection,
                 "plugins",
                 {
@@ -407,6 +412,7 @@ def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
                     "name": plugin_name,
                 },
             )
+            logger.debug("Inserted plugin %s", inserted[0])
             plugin_count += 1
 
         logger.info(
@@ -429,14 +435,18 @@ def main() -> int:
         git_ref: str
         cache: bool
         exit_zero: bool
+        verbose: bool
 
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument("--git-ref", default="main")
     parser.add_argument("--no-cache", action="store_false", dest="cache")
     parser.add_argument("--exit-zero", action="store_true", dest="exit_zero")
-    args = parser.parse_args(namespace=CLINamespace())
-    hub_dir = download_meltano_hub_archive(ref=args.git_ref, use_cache=args.cache)
+    parser.add_argument("--verbose", action="store_true")
 
+    args = parser.parse_args(namespace=CLINamespace())
+
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format="%(message)s")
+    hub_dir = download_meltano_hub_archive(ref=args.git_ref, use_cache=args.cache)
     schema_sql = database.get_db_schema()
 
     with (

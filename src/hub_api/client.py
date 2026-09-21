@@ -171,7 +171,7 @@ class MeltanoHub:
         """
         variant = await fetch_one_dict(self.db, variant_sql, {"variant_id": variant_id})
 
-        if not variant:
+        if variant is None:
             msg = "Variant not found"
             raise ValueError(msg)
 
@@ -340,7 +340,7 @@ class MeltanoHub:
         """
         result = await fetch_one_dict(self.db, sql, {"plugin_id": plugin_id.as_db_id()})
 
-        if result:
+        if result is not None:
             return _build_variant_path(
                 plugin_type=enums.PluginTypeEnum(result["plugin_type"]),
                 plugin_name=result["name"],
@@ -363,7 +363,7 @@ class MeltanoHub:
         """
 
         params: dict[str, Any] = {}
-        if plugin_type:
+        if plugin_type is not None:
             sql += " WHERE p.plugin_type = :plugin_type"
             params["plugin_type"] = plugin_type.value
 
@@ -522,7 +522,7 @@ class MeltanoHub:
         maintainer_sql = "SELECT id, label, url FROM maintainers WHERE id = :maintainer_id"
         maintainer = await fetch_one_dict(self.db, maintainer_sql, {"maintainer_id": maintainer_id})
 
-        if not maintainer:
+        if maintainer is None:
             raise MaintainerNotFoundError(maintainer_id=maintainer_id)
 
         variants_sql = """

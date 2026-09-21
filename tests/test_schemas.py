@@ -31,7 +31,7 @@ def test_supported_python_versions_valid() -> None:
 def test_supported_python_versions_invalid_python2() -> None:
     """Test that Python 2.x versions are rejected."""
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Plugin.model_validate({
+        _ = meltano.Plugin.model_validate({
             "name": "test-plugin",
             "namespace": "test_namespace",
             "variant": "test",
@@ -43,7 +43,7 @@ def test_supported_python_versions_invalid_python2() -> None:
 def test_supported_python_versions_invalid_no_minor() -> None:
     """Test that versions without minor version are rejected."""
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Plugin.model_validate({
+        _ = meltano.Plugin.model_validate({
             "name": "test-plugin",
             "namespace": "test_namespace",
             "variant": "test",
@@ -55,7 +55,7 @@ def test_supported_python_versions_invalid_no_minor() -> None:
 def test_supported_python_versions_invalid_text() -> None:
     """Test that text versions are rejected."""
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Plugin.model_validate({
+        _ = meltano.Plugin.model_validate({
             "name": "test-plugin",
             "namespace": "test_namespace",
             "variant": "test",
@@ -67,7 +67,7 @@ def test_supported_python_versions_invalid_text() -> None:
 def test_supported_python_versions_invalid_placeholder() -> None:
     """Test that placeholder patterns like '3.x' are rejected."""
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Plugin.model_validate({
+        _ = meltano.Plugin.model_validate({
             "name": "test-plugin",
             "namespace": "test_namespace",
             "variant": "test",
@@ -79,7 +79,7 @@ def test_supported_python_versions_invalid_placeholder() -> None:
 def test_supported_python_versions_mixed_valid_invalid() -> None:
     """Test that a list with any invalid version is rejected."""
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Plugin.model_validate({
+        _ = meltano.Plugin.model_validate({
             "name": "test-plugin",
             "namespace": "test_namespace",
             "variant": "test",
@@ -127,7 +127,7 @@ def test_supported_python_versions_on_extractor_subclass() -> None:
 
     # Invalid case
     with pytest.raises(ValidationError, match=r"String should match pattern"):
-        meltano.Extractor.model_validate({
+        _ = meltano.Extractor.model_validate({
             "name": "tap-test",
             "namespace": "tap_test",
             "variant": "test",

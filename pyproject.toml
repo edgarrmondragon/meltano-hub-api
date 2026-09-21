@@ -353,8 +353,15 @@ commands = [
 unused-type-ignore-comment = "ignore"
 
 [tool.pyrefly]
+check-unannotated-defs = true
 enabled-ignores = ["pyrefly"]
+infer-return-types = "never"
 preset = "strict"
+
+[tool.pyrefly.errors]
+missing-override-decorator = "error"
+non-exhaustive-match = "error"
+unused-call-result = "error"
 
 [build-system]
 requires = ["hatchling==1.32.0"]
