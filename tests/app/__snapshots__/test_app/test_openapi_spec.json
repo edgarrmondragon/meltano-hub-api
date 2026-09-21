@@ -310,8 +310,7 @@
           "container_spec": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
+                "$ref": "#/components/schemas/ContainerSpec"
               },
               {
                 "type": "null"
@@ -349,6 +348,90 @@
           "args"
         ],
         "title": "Command",
+        "type": "object"
+      },
+      "ContainerSpec": {
+        "description": "Container details.",
+        "properties": {
+          "command": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Command to run the container with",
+            "title": "Command"
+          },
+          "entrypoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Overwrite the default `ENTRYPOINT` of the image",
+            "title": "Entrypoint"
+          },
+          "env": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Environment variables",
+            "title": "Env"
+          },
+          "image": {
+            "description": "Container image",
+            "title": "Image",
+            "type": "string"
+          },
+          "ports": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Bind these ports",
+            "title": "Ports"
+          },
+          "volumes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Bind mount these volumes",
+            "title": "Volumes"
+          }
+        },
+        "required": [
+          "image"
+        ],
+        "title": "ContainerSpec",
         "type": "object"
       },
       "DateIso8601Setting": {

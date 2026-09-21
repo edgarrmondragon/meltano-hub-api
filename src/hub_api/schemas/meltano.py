@@ -172,6 +172,17 @@ class PluginSetting(
 ): ...
 
 
+class ContainerSpec(BaseModel):
+    """Container details."""
+
+    image: str = Field(description="Container image")
+    command: str | None = Field(None, description="Command to run the container with")
+    entrypoint: str | None = Field(None, description="Overwrite the default `ENTRYPOINT` of the image")
+    ports: dict[str, str] | None = Field(None, description="Bind these ports")
+    volumes: list[str] | None = Field(None, description="Bind mount these volumes")
+    env: dict[str, str] | None = Field(None, description="Environment variables")
+
+
 class Command(BaseModel):
     """Command model."""
 
@@ -185,9 +196,9 @@ class Command(BaseModel):
         description="Override the plugin's executable for this command",
     )
 
-    # TODO: Fill the container_spec field
-    container_spec: dict[str, Any] | None = Field(
+    container_spec: ContainerSpec | None = Field(
         None,
+        title="Container Spec",
         description="Container specification for this command",
     )
 
