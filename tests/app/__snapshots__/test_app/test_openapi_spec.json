@@ -115,26 +115,7 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
+              {},
               {
                 "type": "null"
               }
@@ -265,24 +246,7 @@
           "value": {
             "anyOf": [
               {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
                 "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
               },
               {
                 "type": "null"
@@ -549,24 +513,8 @@
           "value": {
             "anyOf": [
               {
+                "format": "date-time",
                 "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
               },
               {
                 "type": "null"
@@ -697,23 +645,6 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
               {
                 "type": "number"
               },
@@ -848,23 +779,6 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
               },
               {
                 "type": "null"
@@ -1625,26 +1539,7 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
+              {},
               {
                 "type": "null"
               }
@@ -1774,26 +1669,7 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
+              {},
               {
                 "type": "null"
               }
@@ -1924,24 +1800,7 @@
           "value": {
             "anyOf": [
               {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
                 "type": "integer"
-              },
-              {
-                "type": "number"
               },
               {
                 "type": "null"
@@ -2922,23 +2781,6 @@
                 "type": "string"
               },
               {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
                 "type": "null"
               }
             ],
@@ -3067,26 +2909,7 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
+              {},
               {
                 "type": "null"
               }
@@ -3250,26 +3073,7 @@
           },
           "value": {
             "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
+              {},
               {
                 "type": "null"
               }
@@ -3676,23 +3480,6 @@
                 "type": "string"
               },
               {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
                 "type": "null"
               }
             ],
@@ -4091,23 +3878,6 @@
             "anyOf": [
               {
                 "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
               },
               {
                 "type": "null"
