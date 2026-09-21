@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import datetime as dt
+from collections.abc import Mapping
 from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel as PydanticBaseModel
@@ -12,8 +14,7 @@ class BaseModel(PydanticBaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# TODO: make this generic on the type of the setting value
-class _BasePluginSetting(BaseModel):
+class _BasePluginSetting[T](BaseModel):
     """Plugin setting model."""
 
     aliases: list[str] | None = None
@@ -46,25 +47,25 @@ class _BasePluginSetting(BaseModel):
         None,
         description="Whether the setting is sensitive.",
     )
-    value: str | dict[str, Any] | list[Any] | bool | int | float | None = Field(
+    value: T | None = Field(
         None,
         description="The setting value.",
     )
 
 
-class StringSetting(_BasePluginSetting):
+class StringSetting(_BasePluginSetting[str]):
     """String setting model."""
 
     kind: Literal["string"] | None = None
 
 
-class IntegerSetting(_BasePluginSetting):
+class IntegerSetting(_BasePluginSetting[int]):
     """Integer setting model."""
 
     kind: Literal["integer"]
 
 
-class DecimalSetting(_BasePluginSetting):
+class DecimalSetting(_BasePluginSetting[float]):
     """Decimal setting model.
 
     Only available in Meltano 3.9 and later.
@@ -73,31 +74,31 @@ class DecimalSetting(_BasePluginSetting):
     kind: Literal["decimal"]
 
 
-class BooleanSetting(_BasePluginSetting):
+class BooleanSetting(_BasePluginSetting[bool]):
     """Boolean setting model."""
 
     kind: Literal["boolean"]
 
 
-class DateIso8601Setting(_BasePluginSetting):
+class DateIso8601Setting(_BasePluginSetting[dt.datetime]):
     """Date ISO8601 setting model."""
 
     kind: Literal["date_iso8601"]
 
 
-class EmailSetting(_BasePluginSetting):
+class EmailSetting(_BasePluginSetting[str]):
     """Email setting model."""
 
     kind: Literal["email"]
 
 
-class PasswordSetting(_BasePluginSetting):
+class PasswordSetting(_BasePluginSetting[str]):
     """Password setting model."""
 
     kind: Literal["password"]
 
 
-class OAuthSetting(_BasePluginSetting):
+class OAuthSetting(_BasePluginSetting[str]):
     """OAuth setting model."""
 
     kind: Literal["oauth"]
@@ -110,7 +111,7 @@ class Option(BaseModel):
     value: Any = Field(description="The option value")
 
 
-class OptionsSetting(_BasePluginSetting):
+class OptionsSetting(_BasePluginSetting[str]):
     """Options setting model."""
 
     kind: Literal["options"]
@@ -120,31 +121,31 @@ class OptionsSetting(_BasePluginSetting):
     )
 
 
-class FileSetting(_BasePluginSetting):
+class FileSetting(_BasePluginSetting[str]):
     """File setting model."""
 
     kind: Literal["file"]
 
 
-class ArraySetting(_BasePluginSetting):
+class ArraySetting(_BasePluginSetting[list[Any]]):
     """Array setting model."""
 
     kind: Literal["array"]
 
 
-class ObjectSetting(_BasePluginSetting):
+class ObjectSetting(_BasePluginSetting[Mapping[str, Any]]):
     """Object setting model."""
 
     kind: Literal["object"]
 
 
-class HiddenSetting(_BasePluginSetting):
+class HiddenSetting(_BasePluginSetting[str]):
     """Hidden setting model."""
 
     kind: Literal["hidden"]
 
 
-def _kind_discriminator(setting: dict[str, Any] | _BasePluginSetting) -> str:
+def _kind_discriminator[T](setting: dict[str, Any] | _BasePluginSetting[T]) -> str:
     if isinstance(setting, dict):
         return setting.get("kind") or "string"  # pragma: no cover
     return getattr(setting, "kind", None) or "string"
