@@ -74,7 +74,7 @@ commands = [
     ],
 ]
 
-[tool.tox.env.typing]
+[env.typing]
 description = "run type checking"
 labels = ["check"]
 dependency_groups = ["typing"]
