@@ -15,7 +15,7 @@ dependencies = [
     "packaging==26.3",
     "pydantic==2.14.0b2",
     "python-json-logger==4.2.0",
-    "starlette==1.6.0",
+    "starlette==1.7.0",
 ]
 
 [dependency-groups]
