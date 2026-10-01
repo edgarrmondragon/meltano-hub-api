@@ -457,8 +457,8 @@ wheels = [
 
 [[package]]
 name = "mypy"
-version = "2.5.0+dev.3ad769cfc18e645db910d8ef83360a8387b03266"
-source = { git = "https://github.com/python/mypy.git?rev=master#3ad769cfc18e645db910d8ef83360a8387b03266" }
+version = "2.5.0+dev.05e50c09918549e86b379684dcf27cfd35f880f2"
+source = { git = "https://github.com/python/mypy.git?rev=master#05e50c09918549e86b379684dcf27cfd35f880f2" }
 dependencies = [
     { name = "ast-serialize" },
     { name = "librt", marker = "platform_python_implementation != 'PyPy'" },
