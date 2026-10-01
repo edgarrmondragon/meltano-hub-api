@@ -7,7 +7,6 @@ import dataclasses
 import gzip
 import json
 import logging
-import os
 import shutil
 import sqlite3
 import sys
@@ -449,8 +448,9 @@ def main() -> int:
     hub_dir = download_meltano_hub_archive(ref=args.git_ref, use_cache=args.cache)
     schema_sql = database.get_db_schema()
 
+    db_path = database.get_db_path()
     with (
-        tempfile.NamedTemporaryFile(suffix=".db") as tmp_file,
+        tempfile.NamedTemporaryFile(suffix=".db", dir=db_path.parent) as tmp_file,
         sqlite3.connect(tmp_file.name) as connection,
     ):
         connection.executescript(schema_sql)
@@ -458,7 +458,7 @@ def main() -> int:
         result = load_db(hub_dir / "_data", connection)
         print(result.to_markdown())
 
-        os.rename(tmp_file.name, database.get_db_path())  # ruff: ignore[os-rename]
+        Path(tmp_file.name).replace(db_path)
 
     return 0 if args.exit_zero else 1 if result.errors else 0
 

@@ -28,7 +28,7 @@ concurrency:
 jobs:
   get-hub-data:
     name: Get Hub Data
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       pull-requests: write # update comment with build results
     continue-on-error: false
@@ -64,7 +64,7 @@ jobs:
 
   tests:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     continue-on-error: true
     needs: [get-hub-data]
     strategy:
@@ -95,7 +95,7 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -105,7 +105,7 @@ jobs:
 
   typing:
     name: Type Checking
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -115,7 +115,7 @@ jobs:
 
   dependencies:
     name: Dependency Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -125,7 +125,7 @@ jobs:
 
   schemathesis:
     name: Schemathesis Test
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       checks: write # add a check run
       pull-requests: write # update PR with test results
@@ -155,7 +155,7 @@ jobs:
 
   owasp:
     name: OWASP OFFAT
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -187,7 +187,7 @@ jobs:
 
   coverage:
     name: Coverage
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     continue-on-error: false
     needs: [tests]
     steps:
