@@ -7,7 +7,6 @@ import dataclasses
 import gzip
 import json
 import logging
-import os
 import shutil
 import sqlite3
 import sys
@@ -459,7 +458,7 @@ def main() -> int:
         result = load_db(hub_dir / "_data", connection)
         print(result.to_markdown())
 
-        os.rename(tmp_file.name, db_path)  # ruff: ignore[os-rename]
+        Path(tmp_file.name).replace(db_path)
 
     return 0 if args.exit_zero else 1 if result.errors else 0
 
