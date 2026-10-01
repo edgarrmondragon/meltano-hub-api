@@ -17,7 +17,7 @@ permissions: {}
 jobs:
   zizmor:
     name: Zizmor Security Analysis
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       security-events: write # create security reports for the repo
       contents: read # read the contents of the repo
