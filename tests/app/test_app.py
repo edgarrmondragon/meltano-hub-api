@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
-import http
-import unittest.mock
 from typing import TYPE_CHECKING, Any
+lazy import http
+lazy import unittest.mock
 
-import fastapi
-import httpx2 as httpx
 import pytest
-from faker import Faker
-from starlette.datastructures import Headers
-from starlette.requests import Request
-from syrupy.extensions.json import JSONSnapshotExtension
+lazy import fastapi
+lazy import httpx2 as httpx
+lazy from faker import Faker
+lazy from starlette.datastructures import Headers
+lazy from starlette.requests import Request
+lazy from syrupy.extensions.json import JSONSnapshotExtension
 
 from hub_api import database, enums, main
 from hub_api.helpers import compatibility, etag
 
 if TYPE_CHECKING:
-    from syrupy.assertion import SnapshotAssertion
+    lazy from syrupy.assertion import SnapshotAssertion
 
 
 @pytest.fixture(scope="session")

@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Annotated
+lazy from typing import Annotated
 
 import fastapi
 
-from hub_api import dependencies  # ruff: ignore[typing-only-first-party-import]
-from hub_api.schemas import api as api_schemas
 from hub_api.schemas import rfc9457
+lazy from hub_api import dependencies
+lazy from hub_api.schemas import api as api_schemas
 
 router: fastapi.APIRouter = fastapi.APIRouter()
 

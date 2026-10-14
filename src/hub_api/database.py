@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import importlib.resources
-import os
-import pathlib
+lazy import importlib.resources
+lazy import os
+lazy import pathlib
 
-import aiosqlite
+lazy import aiosqlite
 
 _DEFAULT_DB_PATH = "./plugins.db"
 

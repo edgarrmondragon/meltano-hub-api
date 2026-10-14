@@ -4,30 +4,30 @@
 from __future__ import annotations
 
 import dataclasses
-import gzip
 import json
 import logging
-import shutil
 import sqlite3
-import sys
-import tarfile
-import tempfile
-from http import HTTPStatus
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, assert_never
+lazy import gzip
+lazy import shutil
+lazy import sys
+lazy import tarfile
+lazy import tempfile
+lazy from http import HTTPStatus
+lazy from pathlib import Path
 
-import platformdirs
-import pydantic
-import urllib3
-import yaml
+lazy import platformdirs
+lazy import pydantic
+lazy import urllib3
+lazy import yaml
 
-from hub_api import enums
 from hub_api.schemas import meltano, validation
+lazy from hub_api import enums
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Sequence
 
-    from pydantic_core import ErrorDetails
+    lazy from pydantic_core import ErrorDetails
 
 logger: logging.Logger = logging.getLogger(__name__)
 

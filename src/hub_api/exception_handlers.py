@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import http
+lazy import http
 
-from fastapi.utils import is_body_allowed_for_status_code
 lazy import fastapi
 lazy from fastapi.encoders import jsonable_encoder
 lazy from fastapi.exceptions import RequestValidationError
 lazy from fastapi.responses import JSONResponse, Response
+lazy from fastapi.utils import is_body_allowed_for_status_code
 lazy from starlette.exceptions import HTTPException
 
 lazy from hub_api import exceptions

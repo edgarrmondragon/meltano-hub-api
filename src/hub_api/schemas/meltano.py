@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict, Discriminator, Field, HttpUrl, RootModel, Tag
 
-from hub_api import enums  # ruff: ignore[typing-only-first-party-import]
+lazy from hub_api import enums
 
 
 class BaseModel(PydanticBaseModel):
