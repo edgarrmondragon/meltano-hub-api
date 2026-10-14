@@ -18,7 +18,7 @@ from hub_api.helpers import compression, etag
 from hub_api.schemas import rfc9457
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
+    lazy from collections.abc import AsyncGenerator
 
 DESCRIPTION = """\
 The Meltano Hub API provides access to Meltano's plugin registry. It allows you to search for plugins, \

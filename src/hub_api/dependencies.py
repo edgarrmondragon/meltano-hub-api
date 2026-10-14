@@ -9,7 +9,7 @@ import fastapi
 from hub_api import client, database
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
+    lazy from collections.abc import AsyncGenerator
 
 
 async def get_hub(request: fastapi.Request) -> AsyncGenerator[client.MeltanoHub]:

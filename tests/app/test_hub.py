@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-import aiosqlite
 import pytest
 import pytest_asyncio
-from faker import Faker
+lazy import aiosqlite
+lazy from faker import Faker
 
 from hub_api import client, database, enums, ids
 from hub_api.helpers import compatibility
-from hub_api.schemas import api as api_schemas
+lazy from hub_api.schemas import api as api_schemas
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
+    lazy from collections.abc import AsyncGenerator
 
 
 @pytest.fixture(scope="session")

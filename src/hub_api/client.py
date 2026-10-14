@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-import collections
-import json
-import urllib.parse
 from typing import TYPE_CHECKING, Any, assert_never
+lazy import collections
+lazy import json
+lazy import urllib.parse
 
-import pydantic
+lazy import pydantic
 
 from hub_api import enums, exceptions, ids
 from hub_api.helpers import compatibility
-from hub_api.schemas import api as api_schemas
-from hub_api.schemas import meltano
+lazy from hub_api.schemas import api as api_schemas
+lazy from hub_api.schemas import meltano
 
 if TYPE_CHECKING:
-    import aiosqlite
+    lazy import aiosqlite
 
 BASE_HUB_URL = "https://hub.meltano.com"
 

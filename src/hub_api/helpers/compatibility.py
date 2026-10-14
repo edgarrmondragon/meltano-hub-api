@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import contextlib
 import enum
 import re
+lazy import contextlib
 
-import packaging.version
-from starlette.requests import Request  # ruff: ignore[typing-only-third-party-import]
+lazy import packaging.version
+lazy from starlette.requests import Request
 
 type VersionTuple = tuple[int, int]
 

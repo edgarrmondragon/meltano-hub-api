@@ -11,20 +11,20 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag
 
 from __future__ import annotations
 
-import hashlib
-import http
-import importlib.metadata
 from typing import TYPE_CHECKING, Annotated, override
+lazy import hashlib
+lazy import http
+lazy import importlib.metadata
 
 from fastapi import Header, HTTPException, Request, Response
 from pydantic import MISSING
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from . import compatibility
+lazy from . import compatibility
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
-    from pathlib import Path
+    lazy from pathlib import Path
 
 
 def _compute_etag(

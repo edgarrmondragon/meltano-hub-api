@@ -10,11 +10,11 @@ Follows the Starlette GZipMiddleware responder pattern.
 
 from __future__ import annotations
 
-from compression import zstd
 from typing import TYPE_CHECKING, Any, override
+lazy from compression import zstd
 
-from starlette.datastructures import Headers
 from starlette.middleware.gzip import GZipResponder, IdentityResponder
+lazy from starlette.datastructures import Headers
 
 if TYPE_CHECKING:
     from starlette.types import ASGIApp, Receive, Scope, Send

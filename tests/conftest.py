@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import sysconfig
 from typing import TYPE_CHECKING
+lazy import sysconfig
 
 if TYPE_CHECKING:
-    import pytest
+    lazy import pytest
 
 
 def pytest_report_header(config: pytest.Config) -> list[str]:  # ruff: ignore[unused-function-argument]

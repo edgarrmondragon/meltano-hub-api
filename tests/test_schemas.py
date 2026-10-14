@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import pytest
-from pydantic import ValidationError
+lazy import pytest
+lazy from pydantic import ValidationError
 
-from hub_api.schemas import meltano
+lazy from hub_api.schemas import meltano
 
 
 def test_supported_python_versions_valid() -> None:

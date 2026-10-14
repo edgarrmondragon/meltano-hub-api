@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Annotated
+lazy from typing import Annotated
 
 from pydantic import BaseModel, Field, HttpUrl, StringConstraints
 
-from hub_api import enums  # ruff: ignore[typing-only-first-party-import]
 from hub_api.schemas import meltano
+lazy from hub_api import enums
 
 
 class HubPluginMetadata(BaseModel):
