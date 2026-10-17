@@ -33,7 +33,7 @@ dev = [
     { include-group = "typing" },
 ]
 lint = [
-    "ruff~=0.16.0",
+    "ruff~=0.17.0",
     "tach>=0.34.0",
 ]
 tests = [
