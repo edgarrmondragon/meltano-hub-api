@@ -7,7 +7,6 @@ import dataclasses
 import logging
 from typing import TYPE_CHECKING, Any, assert_never
 lazy import argparse
-lazy import io
 lazy import json
 lazy import shutil
 lazy import sqlite3
@@ -15,7 +14,7 @@ lazy import sys
 lazy import tarfile
 lazy import tempfile
 lazy from http import HTTPStatus
-lazy from pathlib import Path
+lazy from pathlib import Path, PurePosixPath
 
 lazy import platformdirs
 lazy import pydantic
@@ -45,30 +44,44 @@ def download_meltano_hub_archive(*, ref: str = "refs/heads/main", use_cache: boo
     if use_cache and cache_key_file.is_file() and (cache_key := cache_key_file.read_text().strip()):
         headers["If-None-Match"] = cache_key
 
-    response = urllib3.request("GET", url, timeout=10.0, retries=3, headers=headers)
-    if response.status == HTTPStatus.NOT_MODIFIED:
-        logger.info("Using cached directory %s", cached_tree)
-        return cached_tree
+    with urllib3.request(
+        "GET",
+        url,
+        timeout=10.0,
+        retries=3,
+        headers=headers,
+        preload_content=False,
+        decode_content=False,
+    ) as response:
+        if response.status == HTTPStatus.NOT_MODIFIED:
+            logger.info("Using cached directory %s", cached_tree)
+            return cached_tree
 
-    if response.status != HTTPStatus.OK:
-        msg = f"Failed to download archive: HTTP {response.status}"
-        raise RuntimeError(msg)
+        if response.status != HTTPStatus.OK:
+            msg = f"Failed to download archive: HTTP {response.status}"
+            raise RuntimeError(msg)
 
-    logger.info("Downloaded archive")
-    shutil.rmtree(cached_tree, ignore_errors=True)
-    cached_tree.mkdir(parents=True)
-    cache_key_file.write_text(response.headers["ETag"])
+        shutil.rmtree(cached_tree, ignore_errors=True)
+        cached_tree.mkdir(parents=True)
 
-    with (
-        tempfile.TemporaryDirectory() as extract_dir,
-        tarfile.open(fileobj=io.BytesIO(response.data), mode="r:gz") as tar,
-    ):
-        tar.extractall(extract_dir, filter="data")
-        extracted = tar.getnames()[0]
+        # Stream mode: decompress and extract while downloading, without buffering the archive
+        logger.info("Downloading archive")
+        with tarfile.open(fileobj=response, mode="r|gz") as tar:
+            for member in tar:
+                # Members look like `<repo>-<ref>/_data/...`; keep only `_data`, dropping the root directory
+                _root, *rest = PurePosixPath(member.name).parts
+                if not rest or rest[0] != "_data":
+                    continue
 
-        # Move the `_data` directory in the extracted directory to the cache
-        extracted_dir = Path(extract_dir) / extracted
-        shutil.move(extracted_dir / "_data", cached_tree / "_data")
+                member.name = str(PurePosixPath(*rest))
+                tar.extract(member, cached_tree, filter="data")
+
+        if not (cached_tree / "_data").is_dir():
+            msg = "Archive does not contain a `_data` directory"
+            raise RuntimeError(msg)
+
+        # Only record the key once extraction succeeded
+        cache_key_file.write_text(response.headers["ETag"])
 
     return cached_tree
 
