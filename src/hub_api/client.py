@@ -314,6 +314,9 @@ class MeltanoHub:
     ) -> api_schemas.PluginDetails:
         try:
             details = await self._variant_details(variant_id.as_db_id())
+        except pydantic.ValidationError as err:
+            msg = "Unexpected plugin validation error"
+            raise RuntimeError(msg) from err
         except ValueError:
             raise PluginNotFoundError(
                 plugin_name=variant_id.plugin_name,
