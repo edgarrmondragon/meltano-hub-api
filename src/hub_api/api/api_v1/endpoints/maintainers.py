@@ -40,7 +40,7 @@ async def get_top_maintainers(
             lt=50,
             description="The number of maintainers to return",
         ),
-    ],
+    ] = 10,
 ) -> list[api_schemas.MaintainerPluginCount]:
     """Retrieve top maintainers."""
     return await hub.get_top_maintainers(count)

@@ -5,6 +5,8 @@ lazy from collections.abc import Sequence
 
 from pydantic import MISSING, BaseModel, ConfigDict, Field, with_config
 
+MEDIA_TYPE = "application/problem+json"
+
 
 class Problem(BaseModel):
     type: str = Field(description="URI reference that identifies the problem type")

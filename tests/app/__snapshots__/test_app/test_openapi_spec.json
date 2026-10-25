@@ -895,7 +895,8 @@
           "batch",
           "test",
           "log-based",
-          "structured-logging"
+          "structured-logging",
+          "start-date"
         ],
         "title": "ExtractorCapabilityEnum",
         "type": "string"
@@ -5134,8 +5135,9 @@
             "description": "The number of maintainers to return",
             "in": "query",
             "name": "count",
-            "required": true,
+            "required": false,
             "schema": {
+              "default": 10,
               "description": "The number of maintainers to return",
               "exclusiveMaximum": 50,
               "minimum": 1,

@@ -60,6 +60,7 @@ class ExtractorCapabilityEnum(_HyphenatedEnum):
     test = enum.auto()
     log_based = enum.auto()
     structured_logging = enum.auto()
+    start_date = enum.auto()
 
 
 class LoaderCapabilityEnum(_HyphenatedEnum):

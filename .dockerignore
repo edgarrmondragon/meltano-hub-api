@@ -208,12 +208,6 @@ site
 # Automatically created by ruff.
 .ruff_cache/**/*
 
-# flyctl launch added from .tach/.gitignore
-# This folder is for tach. Do not edit.
-
-# gitignore all content, including this .gitignore
-.tach/**/*
-
 # flyctl launch added from .venv/.gitignore
 .venv/**/*
 

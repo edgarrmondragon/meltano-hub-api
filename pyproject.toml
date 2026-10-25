@@ -21,8 +21,8 @@ dependencies = [
 [dependency-groups]
 build = [
     "platformdirs~=4.9",
-    "PyYAML~=6.0",
     "urllib3~=2.8",
+    "yamlstar>=0.1.26",
 ]
 coverage = ["coverage>=7.16.1,<8"]
 dev = [
@@ -34,7 +34,6 @@ dev = [
 ]
 lint = [
     "ruff~=0.17.0",
-    "tach>=0.34.0",
 ]
 tests = [
     { include-group = "coverage" },
@@ -52,7 +51,6 @@ typing = [
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "ty==0.0.86",
-    "types-PyYAML>=6.0.12.20240808",
 ]
 
 [tool.uv]
@@ -143,6 +141,7 @@ enable_error_code = [
     "truthy-bool",
     "exhaustive-match",    # https://mypy.readthedocs.io/en/stable/error_code_list2.html#check-that-match-statements-match-exhaustively-exhaustive-match
 ]
+follow_untyped_imports = true
 strict = true
 warn_unused_configs = true
 warn_unused_ignores = true

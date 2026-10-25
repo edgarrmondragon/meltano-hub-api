@@ -317,12 +317,12 @@ async def test_maintainers(api: httpx.AsyncClient) -> None:
 @pytest.mark.asyncio
 async def test_maintainer_details(api: httpx.AsyncClient) -> None:
     """Test /meltano/api/v1/maintainers."""
-    response = await api.get("/meltano/api/v1/maintainers/edgarrmondragon")
+    response = await api.get("/meltano/api/v1/maintainers/reservoir-data")
     assert response.status_code == http.HTTPStatus.OK
 
     maintainer = response.json()
-    assert maintainer["id"] == "edgarrmondragon"
-    assert maintainer["url"] == "https://github.com/edgarrmondragon"
+    assert maintainer["id"] == "reservoir-data"
+    assert maintainer["url"] == "https://github.com/reservoir-data"
     assert isinstance(maintainer["links"], dict)
     assert len(maintainer["links"]) > 0
 

@@ -21,6 +21,7 @@ def http_exception_handler(request: fastapi.Request, exc: HTTPException) -> Resp
     return JSONResponse(
         status_code=exc.status_code,
         headers=headers,
+        media_type=rfc9457.MEDIA_TYPE,
         content=rfc9457.Problem(
             type=f"https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/{exc.status_code}",
             status=exc.status_code,
@@ -32,6 +33,7 @@ def http_exception_handler(request: fastapi.Request, exc: HTTPException) -> Resp
 def request_validation_exception_handler(request: fastapi.Request, exc: RequestValidationError) -> JSONResponse:  # ruff: ignore[unused-function-argument]
     return JSONResponse(
         status_code=http.HTTPStatus.UNPROCESSABLE_ENTITY,
+        media_type=rfc9457.MEDIA_TYPE,
         content=rfc9457.ValidationErrorProblem(
             type="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/422",
             status=http.HTTPStatus.UNPROCESSABLE_ENTITY,
@@ -44,6 +46,7 @@ def request_validation_exception_handler(request: fastapi.Request, exc: RequestV
 def bad_parameter_exception_handler(request: fastapi.Request, exc: exceptions.BadParameterError) -> Response:  # ruff: ignore[unused-function-argument]
     return JSONResponse(
         status_code=http.HTTPStatus.BAD_REQUEST,
+        media_type=rfc9457.MEDIA_TYPE,
         content=rfc9457.Problem(
             type="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/400",
             status=http.HTTPStatus.BAD_REQUEST,
@@ -59,6 +62,7 @@ def not_found_exception_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=http.HTTPStatus.NOT_FOUND,
+        media_type=rfc9457.MEDIA_TYPE,
         content=rfc9457.Problem(
             type="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404",
             status=http.HTTPStatus.NOT_FOUND,

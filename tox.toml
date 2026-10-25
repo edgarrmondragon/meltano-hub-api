@@ -68,10 +68,6 @@ commands = [
         { replace = "posargs", default = [
         ], extend = true },
     ],
-    [
-        "tach",
-        "check",
-    ],
 ]
 
 [env.typing]

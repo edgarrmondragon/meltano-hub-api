@@ -56,11 +56,6 @@ coverage $ONLY_GROUP="tests": build-db
     uv run coverage combine --keep
     uv run coverage report --fail-under=100 --show-missing
 
-# Enforce architecture
-[group('test')]
-tach:
-    -uvx tach check
-
 # Run OpenAPI checks with Schemathesis
 [group('test')]
 api host="127.0.0.1": build-db

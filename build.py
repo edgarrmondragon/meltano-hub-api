@@ -1,15 +1,16 @@
-# ruff: file-ignore[print]
+# ruff: file-ignore[hardcoded-sql-expression, print]
 # pyrefly: ignore-errors[unused-call-result]
 
 from __future__ import annotations
 
 import dataclasses
-import json
 import logging
-import sqlite3
 from typing import TYPE_CHECKING, Any, assert_never
-lazy import gzip
+lazy import argparse
+lazy import io
+lazy import json
 lazy import shutil
+lazy import sqlite3
 lazy import sys
 lazy import tarfile
 lazy import tempfile
@@ -19,74 +20,70 @@ lazy from pathlib import Path
 lazy import platformdirs
 lazy import pydantic
 lazy import urllib3
-lazy import yaml
+lazy import yamlstar
 
-from hub_api.schemas import meltano, validation
-lazy from hub_api import enums
+lazy from hub_api import database, enums
+lazy from hub_api.schemas import meltano, validation
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Sequence
 
-    lazy from pydantic_core import ErrorDetails
+    from pydantic_core import ErrorDetails
+
 
 logger: logging.Logger = logging.getLogger(__name__)
 
-sqlite3.register_adapter(list, json.dumps)
-sqlite3.register_adapter(dict, json.dumps)
 
-
-def download_meltano_hub_archive(*, ref: str = "main", use_cache: bool = True) -> Path:
+def download_meltano_hub_archive(*, ref: str = "refs/heads/main", use_cache: bool = True) -> Path:
     """Download Meltano Hub archive."""
     cached_tree = platformdirs.user_cache_path("hub-api")
-    if use_cache and cached_tree.exists():
+    cache_key_file = cached_tree / "key"
+
+    url = f"https://codeload.github.com/meltano/hub/tar.gz/{ref}"
+    headers: dict[str, str] = {}
+
+    if use_cache and cache_key_file.is_file() and (cache_key := cache_key_file.read_text().strip()):
+        headers["If-None-Match"] = cache_key
+
+    response = urllib3.request("GET", url, timeout=10.0, retries=3, headers=headers)
+    if response.status == HTTPStatus.NOT_MODIFIED:
         logger.info("Using cached directory %s", cached_tree)
+        return cached_tree
 
-    else:
-        shutil.rmtree(cached_tree, ignore_errors=True)
-        url = f"https://codeload.github.com/meltano/hub/tar.gz/refs/heads/{ref}"
-        logger.info("Downloading archive %s", url)
+    if response.status != HTTPStatus.OK:
+        msg = f"Failed to download archive: HTTP {response.status}"
+        raise RuntimeError(msg)
 
-        response = urllib3.request("GET", url, timeout=10.0, retries=3)
-        if response.status != HTTPStatus.OK:
-            msg = f"Failed to download archive: HTTP {response.status}"
-            raise Exception(msg)
+    logger.info("Downloaded archive")
+    shutil.rmtree(cached_tree, ignore_errors=True)
+    cached_tree.mkdir(parents=True)
+    cache_key_file.write_text(response.headers["ETag"])
 
-        with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp_file:
-            _ = tmp_file.write(gzip.decompress(response.data))
-            _ = tmp_file.seek(0)
-            with (
-                tempfile.TemporaryDirectory() as extract_dir,
-                tarfile.open(tmp_file.name) as tar,
-            ):
-                tar.extractall(extract_dir, filter="data")
-                extracted = tar.getnames()[0]
+    with (
+        tempfile.TemporaryDirectory() as extract_dir,
+        tarfile.open(fileobj=io.BytesIO(response.data), mode="r:gz") as tar,
+    ):
+        tar.extractall(extract_dir, filter="data")
+        extracted = tar.getnames()[0]
 
-                # Move each item in the extracted directory to the cache
-                extracted_dir = Path(extract_dir) / extracted
-                cached_tree.mkdir(parents=True)
-                for item in extracted_dir.iterdir():
-                    shutil.move(item, cached_tree / item.name)
+        # Move the `_data` directory in the extracted directory to the cache
+        extracted_dir = Path(extract_dir) / extracted
+        shutil.move(extracted_dir / "_data", cached_tree / "_data")
 
     return cached_tree
 
 
-def load_yaml(path: Path) -> dict[str, dict[str, str]]:
+def load_yaml(ys: yamlstar.YAMLStar, path: Path) -> dict[str, dict[str, str]]:
     """Get default variants of a given plugin."""
     with path.open(encoding="utf-8") as f:
-        return yaml.safe_load(f)  # type: ignore[no-any-return]
+        return ys.load(f.read())  # type: ignore[no-any-return, no-untyped-call]
 
 
-def get_plugin_variants(plugin_path: Path) -> Generator[tuple[str, dict[str, Any]]]:
+def get_plugin_variants(ys: yamlstar.YAMLStar, plugin_path: Path) -> Generator[tuple[str, dict[str, Any]]]:
     """Get plugin variants of a given type."""
     for plugin_file in plugin_path.glob("*.yml"):
         with plugin_file.open() as f:
-            yield plugin_file.stem, yaml.safe_load(f)
-
-
-def get_plugins_of_type(base_path: Path, plugin_type: enums.PluginTypeEnum) -> Generator[tuple[str, dict[str, Any]]]:
-    """Get plugins of a given type."""
-    for plugin_path in base_path.joinpath(plugin_type).glob("*"):
-        yield from get_plugin_variants(plugin_path)
+            yield plugin_file.stem, ys.load(f.read())  # type: ignore[no-untyped-call]
 
 
 def _build_setting(variant_id: str, setting: meltano.PluginSetting) -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -159,7 +156,7 @@ def _insert_row(connection: sqlite3.Connection, table: str, row: dict[str, Any])
     column_names = row.keys()
     columns = ", ".join(column_names)
     placeholders = ", ".join(f":{col}" for col in column_names)
-    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) RETURNING *"  # ruff: ignore[hardcoded-sql-expression]
+    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) RETURNING *"
     cursor = connection.execute(query, row)
     return cursor.fetchone()  # type: ignore[no-any-return]
 
@@ -172,7 +169,7 @@ def _insert_rows(connection: sqlite3.Connection, table: str, rows: Sequence[dict
     column_names = rows[0].keys()
     columns = ", ".join(column_names)
     placeholders = ", ".join(f":{col}" for col in column_names)
-    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"  # ruff: ignore[hardcoded-sql-expression]
+    query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
     connection.executemany(query, rows)
 
 
@@ -212,21 +209,18 @@ def _insert_variant(  # ruff: ignore[too-many-arguments]
     plugin_type: enums.PluginTypeEnum,
     plugin_name: str,
     definition: dict[str, Any],
-    result: LoadResult,
-) -> None:
+) -> Generator[LoadError]:
     """Insert a variant into the database."""
     try:
         plugin = _match_plugin(plugin_type, definition)
     except pydantic.ValidationError as exc:
         logger.error("Error validating plugin %s", plugin_id)
         for error in exc.errors():
-            result.errors.append(
-                LoadError(
-                    plugin_name=plugin_name,
-                    variant=variant,
-                    link=f"https://github.com/meltano/hub/blob/main/_data/meltano/{plugin_type}/{plugin_name}/{variant}.yml",
-                    error=error,
-                ),
+            yield LoadError(
+                plugin_name=plugin_name,
+                variant=variant,
+                link=f"https://github.com/meltano/hub/blob/main/_data/meltano/{plugin_type}/{plugin_name}/{variant}.yml",
+                error=error,
             )
         return
 
@@ -362,9 +356,10 @@ def _insert_variant(  # ruff: ignore[too-many-arguments]
 
 def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
     """Load database."""
+    ys = yamlstar.YAMLStar()  # type: ignore[no-untyped-call]
     result = LoadResult(errors=[])
-    default_variants = load_yaml(path.joinpath("default_variants.yml"))
-    maintainers = load_yaml(path.joinpath("maintainers.yml"))
+    default_variants = load_yaml(ys, path.joinpath("default_variants.yml"))
+    maintainers = load_yaml(ys, path.joinpath("maintainers.yml"))
 
     _insert_rows(
         connection,
@@ -389,15 +384,16 @@ def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
             plugin_id = f"{plugin_type}.{plugin_name}"
             default_variant_id = f"{plugin_id}.{default_variant}"
 
-            for variant, definition in get_plugin_variants(plugin_path):
-                _insert_variant(
-                    connection=connection,
-                    variant=variant,
-                    plugin_id=plugin_id,
-                    plugin_type=plugin_type,
-                    plugin_name=plugin_name,
-                    definition=definition,
-                    result=result,
+            for variant, definition in get_plugin_variants(ys, plugin_path):
+                result.errors.extend(
+                    _insert_variant(
+                        connection=connection,
+                        variant=variant,
+                        plugin_id=plugin_id,
+                        plugin_type=plugin_type,
+                        plugin_name=plugin_name,
+                        definition=definition,
+                    )
                 )
                 variant_count += 1
 
@@ -426,25 +422,30 @@ def load_db(path: Path, connection: sqlite3.Connection) -> LoadResult:
 
 
 def main() -> int:
-    import argparse  # ruff: ignore[import-outside-top-level]
-
-    from hub_api import database  # ruff: ignore[import-outside-top-level]
-
-    class CLINamespace(argparse.Namespace):
+    @dataclasses.dataclass(init=False)
+    class CLINamespace:
         git_ref: str
         cache: bool
         exit_zero: bool
         verbose: bool
 
     parser = argparse.ArgumentParser(allow_abbrev=False)
-    parser.add_argument("--git-ref", default="main")
-    parser.add_argument("--no-cache", action="store_false", dest="cache")
-    parser.add_argument("--exit-zero", action="store_true", dest="exit_zero")
-    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--git-ref", default="refs/heads/main", help="e.g. refs/head/main")
+    parser.add_argument("--no-cache", action="store_false", dest="cache", help="disable the cache")
+    parser.add_argument(
+        "--exit-zero",
+        action="store_true",
+        dest="exit_zero",
+        help="exit with code 0 even when an error occurs",
+    )
+    parser.add_argument("--verbose", action="store_true", help="print debug output")
 
     args = parser.parse_args(namespace=CLINamespace())
 
-    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format="%(message)s")
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format="%(levelname)s - %(message)s")
+    sqlite3.register_adapter(list, json.dumps)
+    sqlite3.register_adapter(dict, json.dumps)
+
     hub_dir = download_meltano_hub_archive(ref=args.git_ref, use_cache=args.cache)
     schema_sql = database.get_db_schema()
 
