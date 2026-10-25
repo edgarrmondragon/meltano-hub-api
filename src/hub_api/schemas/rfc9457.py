@@ -5,7 +5,8 @@ lazy from collections.abc import Sequence
 
 from pydantic import MISSING, BaseModel, ConfigDict, Field, with_config
 
-MEDIA_TYPE = "application/problem+json"
+# TODO: Switch to application/problem+json when FastAPI supports per-response media types
+MEDIA_TYPE = "application/json"
 
 
 class Problem(BaseModel):
