@@ -50,7 +50,7 @@ typing = [
     "mypy>=2.4.0",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
-    "ty==0.0.86",
+    "ty==0.0.91",
 ]
 
 [tool.uv]
