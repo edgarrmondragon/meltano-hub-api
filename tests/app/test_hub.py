@@ -119,7 +119,6 @@ async def test_get_plugin_type_index(hub: client.MeltanoHub, plugin_type: enums.
         pytest.param("tap-mssql", enums.PluginTypeEnum.extractors, "wintersrd"),
         pytest.param("tap-mssql", enums.PluginTypeEnum.extractors, "airbyte"),
         pytest.param("target-postgres", enums.PluginTypeEnum.loaders, "meltanolabs"),
-        pytest.param("target-bigquery", enums.PluginTypeEnum.loaders, "z3z1ma"),
         pytest.param("dbt-postgres", enums.PluginTypeEnum.utilities, "dbt-labs"),
         pytest.param("dbt-postgres", enums.PluginTypeEnum.transformers, "dbt-labs"),
         pytest.param("tap-gitlab", enums.PluginTypeEnum.transforms, "meltano"),
@@ -139,6 +138,26 @@ async def test_get_plugin_details(
     details = await hub.get_plugin_details(variant_id=variant_id)
     assert details.name == plugin
     assert details.variant == variant
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("plugin", "plugin_type", "variant"),
+    [
+        pytest.param("target-bigquery", enums.PluginTypeEnum.loaders, "z3z1ma"),
+        pytest.param("target-ducklake", enums.PluginTypeEnum.loaders, "definite"),
+    ],
+)
+async def test_get_invalid_plugin_details(
+    hub: client.MeltanoHub,
+    plugin: str,
+    plugin_type: enums.PluginTypeEnum,
+    variant: str,
+) -> None:
+    """Test get_plugin_details."""
+    variant_id = ids.VariantID.from_params(plugin_type=plugin_type, plugin_name=plugin, plugin_variant=variant)
+    with pytest.raises(RuntimeError, match="Unexpected plugin validation error"):
+        _ = await hub.get_plugin_details(variant_id=variant_id)
 
 
 @pytest.mark.asyncio
