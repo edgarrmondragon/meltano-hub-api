@@ -116,11 +116,8 @@ async def test_plugin_search(api: httpx.AsyncClient) -> None:
                 "type": "missing",
                 "loc": ["query", "name"],
                 "msg": "Field required",
-                "input": {
-                    "type": "MISSING",
-                    "variant": "MISSING",
-                },
-            }
+                "input": {},
+            },
         ],
     }
 
