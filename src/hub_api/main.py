@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 
 import fastapi
 from fastapi import staticfiles
-from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 
@@ -27,9 +26,6 @@ view their details, and download the necessary files to install them.
 - The API is versioned, with the current version being v1.
 - The API is read-only, and no authentication is required.
 """
-
-# TODO: Remove once https://github.com/fastapi/fastapi/discussions/16158 is resolved
-ENCODERS_BY_TYPE[sentinel] = repr
 
 
 @asynccontextmanager
