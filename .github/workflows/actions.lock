@@ -3,7 +3,7 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.3'
 workflows:
-    '.github/workflows/pre-commit.yml':
+    '.github/workflows/lint.yml':
         - 'actions/checkout@v7.0.1'
         - 'astral-sh/setup-uv@v10.3.3'
     '.github/workflows/tests.yml':
@@ -12,8 +12,6 @@ workflows:
         - 'actions/upload-artifact@v7.0.2'
         - 'astral-sh/setup-uv@v10.3.3'
         - 'mikepenz/action-junit-report@v6.7.1'
-    '.github/workflows/verify-lockfile.yml':
-        - 'actions/checkout@v7.0.1'
     '.github/workflows/zizmor.yml':
         - 'actions/checkout@v7.0.1'
         - 'zizmorcore/zizmor-action@v0.8.1'
