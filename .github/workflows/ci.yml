@@ -123,6 +123,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-26.04
+    needs: [gha-lock]
     steps:
     - uses: actions/checkout@v7.0.1
       with:
