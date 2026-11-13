@@ -133,6 +133,7 @@ jobs:
   typing:
     name: Type Checking
     runs-on: ubuntu-26.04
+    needs: [gha-lock]
     steps:
     - uses: actions/checkout@v7.0.1
       with:
@@ -143,6 +144,7 @@ jobs:
   dependencies:
     name: Dependency Check
     runs-on: ubuntu-26.04
+    needs: [gha-lock]
     steps:
     - uses: actions/checkout@v7.0.1
       with:
@@ -153,6 +155,7 @@ jobs:
   schemathesis:
     name: Schemathesis Test
     runs-on: ubuntu-26.04
+    needs: [gha-lock]
     permissions:
       checks: write # add a check run
       pull-requests: write # update PR with test results
@@ -183,6 +186,7 @@ jobs:
   owasp:
     name: OWASP OFFAT
     runs-on: ubuntu-26.04
+    needs: [gha-lock]
     steps:
     - uses: actions/checkout@v7.0.1
       with:
