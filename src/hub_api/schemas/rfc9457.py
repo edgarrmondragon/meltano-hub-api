@@ -28,11 +28,11 @@ class Problem(BaseModel):
 # TODO: Remove Pyright comments: https://github.com/microsoft/pyright/issues/11742
 # TODO: Remove Pyrefly comments: https://github.com/facebook/pyrefly/issues/4994
 _FIELD_TITLE_MAPPING = frozendict(
-    ctx="Context",  # pyrefly: ignore[unexpected-keyword]  # pyright: ignore[reportCallIssue]
-    input="Input",  # pyrefly: ignore[unexpected-keyword]  # pyright: ignore[reportCallIssue]
-    loc="Location",  # pyrefly: ignore[unexpected-keyword]  # pyright: ignore[reportCallIssue]
-    msg="Message",  # pyrefly: ignore[unexpected-keyword]  # pyright: ignore[reportCallIssue]
-    type="Error Type",  # pyrefly: ignore[unexpected-keyword]  # pyright: ignore[reportCallIssue]
+    ctx="Context",  # pyright: ignore[reportCallIssue]
+    input="Input",  # pyright: ignore[reportCallIssue]
+    loc="Location",  # pyrefly# pyright: ignore[reportCallIssue]
+    msg="Message",  # pyright: ignore[reportCallIssue]
+    type="Error Type",  # pyright: ignore[reportCallIssue]
 )
 
 
