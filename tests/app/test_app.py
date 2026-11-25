@@ -306,7 +306,7 @@ async def test_maintainers(api: httpx.AsyncClient) -> None:
     assert response.status_code == http.HTTPStatus.OK
 
     data = response.json()
-    maintainer = next(filter(lambda m: m["id"] == "reservoir-data", data["maintainers"]))  # pyrefly:ignore[implicit-any-lambda]
+    maintainer = next(filter(lambda m: m["id"] == "reservoir-data", data["maintainers"]))
     assert maintainer["id"] == "reservoir-data"
     assert maintainer["url"] == "https://github.com/reservoir-data"
 
